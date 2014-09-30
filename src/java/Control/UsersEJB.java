@@ -2,6 +2,7 @@
 package Control;
 
 import Model.Pessoa;
+import Model.Users;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,5 +33,15 @@ public class UsersEJB {
               }
               return lista;
          } 
+         public Pessoa retornaPessoaParaSessao(String nomeDeUsuario){
+             Users user = new Users();
+         user = (Users)em.createQuery("Select u From Users u Where u.username =:nome " )
+                 .setParameter("nome",nomeDeUsuario)
+                 .getSingleResult(); 
+         return  (Pessoa) em.createQuery( "SELECT t FROM Pessoa t Where t.usuario.id =:id" )
+                 .setParameter("id",user.getId())
+                 .getSingleResult();
+           
+       }
 
 }
