@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+                <p:commandButton  action="#{ produtoMB.resetaProdutoKit()}" oncomplete="cadastroDialogo.show()"   style="margin-bottom: 5px;" value="Incluir"/>
+                <h:form id="form2">
+                     <p:dialog   header="Cadastro"  widgetVar="cadastroDialogo" modal="true"  showEffect="fade" hideEffect="explode">
+                         <p:outputPanel id="cadastroKit"  layout="block" >  
+                         <p:commandButton   oncomplete="listaDialogo.show()"   style="margin-bottom: 5px;" value="Selecionar Produto"/>
+                         <h:panelGrid columns="2">   
+                             <p:dataTable var="produto" value="#{ produtoMB.kit.produtos}" rows="5" paginator="true" style="margin-top: 15px; ">
+                                <p:column  filterBy="#{produto.codProduto}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                   <h:outputLabel value="#{produto.codProduto}"/> 
+                                </p:column>
+                                <p:column  filterBy="#{produto.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                                  <h:outputLabel value="#{produto.descricao}"/> 
+                               </p:column>
+                               <p:column  filterBy="#{produto.numeroSerie}"     headerText="Numero de Série" filterMatchMode="contains" style="color:#003399;"   >
+                                 <h:outputLabel value="#{produto.numeroSerie}"/> 
+                               </p:column>
+                               <p:column  filterBy="#{produto.categoria.descricao}"     headerText="Categoria" filterMatchMode="contains" style="color:#003399;"   >
+                                 <h:outputLabel value="#{produto.categoria.descricao}"/> 
+                               </p:column>
+                                <p:column    headerText="Valor"  style="color:#003399;"   >
+                                    <h:outputLabel value="#{produto.valor}"/> 
+                               </p:column>
+                               <p:column  headerText="Remover" style="color:#003399;" width="10">
+                                 <p:commandLink update=":form2:cadastroKit"  action="#{produtoMB.kit.produtos.remove(produto)}" title="Editar" >  
+                                  <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                                 </p:commandLink> 
+                               </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>  
+                       </p:outputPanel>
+                     </p:dialog>
+                    <p:growl id="msgs"/>
+                </h:form>
+                <h:form id="form3">
+                  <p:dialog   header="Lista"  widgetVar="listaDialogo" modal="true"  showEffect="fade" hideEffect="explode">
+                   <p:dataTable var="produto" value="#{ produtoMB.finByAllProduto()}" style="margin-top: 15px; ">
+                       <f:facet name="header">
+                           <h3>Lista de produtos</h3>
+                       </f:facet>
+                       <p:column  filterBy="#{produto.codProduto}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                            <h:outputLabel value="#{produto.codProduto}"/> 
+                       </p:column>
+                       <p:column  filterBy="#{produto.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                           <h:outputLabel value="#{produto.descricao}"/> 
+                       </p:column>
+                       <p:column  filterBy="#{produto.numeroSerie}"     headerText="Numero de Série" filterMatchMode="contains" style="color:#003399;"   >
+                            <h:outputLabel value="#{produto.numeroSerie}"/> 
+                       </p:column>
+                       <p:column  filterBy="#{produto.categoria.descricao}"     headerText="Categoria" filterMatchMode="contains" style="color:#003399;"   >
+                           <h:outputLabel value="#{produto.categoria.descricao}"/> 
+                       </p:column>
+                       <p:column  headerText="Selecionar" style="color:#003399;" width="10">
+                           <p:commandLink update=":form2:cadastroKit" oncomplete="listaDialogo.hide()" title="Selecionar" action="#{produtoMB.kit.produtos.add(produto)}" >  
+                           <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />    
+                          </p:commandLink> 
+                        </p:column>
+                  </p:dataTable>
+                </p:dialog>
+                </h:form>
+                 <h:form id="form" style="margin-top: 25px; ">
+                       <p:dataTable var="produto" value="#{ produtoMB.finByAllProdutoKit()}" style="margin-top: 15px; ">
+                       <f:facet name="header">
+                           <h3>Lista de Kits</h3>
+                       </f:facet>
+                           <p:column  filterBy="#{produto.codProduto}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                               <h:outputLabel value="#{produto.codProduto}"/> 
+                           </p:column>
+                           <p:column  filterBy="#{produto.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.descricao}"/> 
+                          </p:column>
+                           <p:column  filterBy="#{produto.numeroSerie}"     headerText="Numero de Série" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.numeroSerie}"/> 
+                          </p:column>
+                           <p:column  filterBy="#{produto.categoria.descricao}"     headerText="Categoria" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.categoria.descricao}"/> 
+                          </p:column>
+                         <p:column  headerText="Editar" style="color:#003399;" width="10">
+                           <p:commandLink update=":form:edicaoProduto" oncomplete="produtoDialogo.show()" title="Editar" >  
+                           <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                           <f:setPropertyActionListener value="#{produto}"   
+                                                        target="#{ produtoMB.kit}" />  
+                          </p:commandLink> 
+                        </p:column>
+                    
+                </p:dataTable>
+                   <p:dialog   header="Edição de Produto"  widgetVar="produtoDialogo" modal="true"  showEffect="fade" hideEffect="explode" closable="false">  
+                  
+                    <p:outputPanel id="edicaoProduto"  layout="block" >   
+                       <h:panelGrid columns="2">   
+                           <p:outputLabel value="Codigo:" styleClass="prodCss"/>
+                           <p:inputText value="#{produtoMB.produto.codProduto}" label="codigo" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Descrição:" styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.descricao}"  label="descricao" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Numero de Série:"/>
+                            <p:inputText value="#{produtoMB.produto.numeroSerie}"  label="NumeroSerie" styleClass="prodCss" size="35"/>
+                            <h:outputLabel value="Categoria:"  styleClass="prodCss"/>
+                            <h:selectOneMenu value="#{ produtoMB.produto.categoria}" converter="#{ converterProdutoMB}" styleClass="prodCss">
+                                <f:selectItems value="#{ categoriaMB.findByAllCategoria()}"
+                                  var="categoria"
+                                  itemValue="#{categoria}"
+                                  itemLabel="#{categoria.descricao}"   />
+                             </h:selectOneMenu> 
+                             <h:outputLabel value="Valor:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.valor}" label="Valor" styleClass="prodCss" />
+                            <p:commandButton action="#{ produtoMB.alteraProduto()}" update="msg :form" value="Alterar" style="margin-top: 15px;"/>
+                            <p:commandButton action="#{ produtoMB.resetaProduto()}"  value="Sair" oncomplete="produtoDialogo.hide()" style="margin-top: 15px; margin-left: 150px;"/>
+                        </h:panelGrid>  
+                    </p:outputPanel>
+                </p:dialog>
+                <p:growl id="msg"/>
+              </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

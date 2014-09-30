@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+              <h2 style="text-align: center;">Cadastro status de pedidos</h2>
+              <h:form id="form2">
+                  <p:commandButton  action="#{ statusPedidoMB.resetaStatus()}" oncomplete="cadastroDialogo.show()"  update=":form2:incluiCategoria" style="float: right; margin-bottom: 5px;" value="Incluir"/>
+                    <p:dialog   header="Cadastro"  widgetVar="cadastroDialogo" modal="true"  showEffect="fade" hideEffect="explode">
+                      <p:outputPanel id="incluiCategoria"  layout="block" >   
+                      <h:panelGrid columns="2" id="grid">
+                        <p:outputLabel value="Descrição:"/>
+                        <p:inputText value="#{ statusPedidoMB.status.descricao}" required="true" size="30" label="Descricao"/>
+                        <p:commandButton action="#{ statusPedidoMB.incluiStatus()}" update=":form2 :form" value="incluir" style="margin-top: 15px;"/>             
+                      </h:panelGrid>
+                      </p:outputPanel>
+                    </p:dialog>
+                   <p:growl  id="msgs"/>
+                </h:form>
+              <h:form id="form" style="margin-top: 50px;">
+                  <p:dataTable var="status" value="#{ statusPedidoMB.findByAllStatus()}" style="margin-top: 15px;">
+                       <f:facet name="header">
+                           <h3>Lista de status de pedido</h3>
+                       </f:facet>
+                      <p:column  filterBy="#{ status.id}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                        <h:outputLabel value="#{status.id}"/> 
+                   </p:column>
+                      <p:column  filterBy="#{status.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                        <h:outputLabel value="#{status.descricao}"/> 
+                   </p:column>
+                   <p:column  headerText="Editar" style="color:#003399;" width="10">
+                       <p:commandLink update=":form:edicaoCategoria" oncomplete="categoriaDialogo.show()" title="Editar" >  
+                       <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                       <f:setPropertyActionListener value="#{status}"   
+                                                    target="#{  statusPedidoMB.status}" />  
+                       </p:commandLink> 
+                   </p:column>
+                   <p:column  headerText="Excluir" style="color:#003399;" width="10">
+                       <p:commandButton update=":form:exclusaoCategoria" value="Excluir"  action="#{ statusPedidoMB.setaStatusExclusao(status)}"  oncomplete="confirmation.show()" />
+                   </p:column>  
+                </p:dataTable>
+                <p:dialog  header="Exclusao de Categoria" widgetVar="confirmation"  modal="true">  
+                   <p:outputPanel id="exclusaoCategoria" layout="block">
+                    <p:outputLabel value="Deseja realmente excluir:" /><br/>
+                    <p:outputLabel value="#{  statusPedidoMB.mensagemConfirmaExclusaoStatus()}" /> <br/>
+                    <p:commandButton id="btnSim" value="Sim"   action="#{ statusPedidoMB.excluiStatus()}"  update="form msg"  oncomplete="confirmation.hide()" ajax="false"   />  
+                    <p:commandButton id="btnNao" value="Não"  onclick="confirmation.hide()"  type="button" ajax="false" style="margin-left: 20px;"/> 
+                   </p:outputPanel>
+                </p:dialog>
+                   <p:dialog   header="Edição de Categoria"  widgetVar="categoriaDialogo" modal="true"  showEffect="fade" hideEffect="explode" closable="false">  
+                  
+                    <p:outputPanel id="edicaoCategoria"  layout="block" >   
+                      <h:panelGrid columns="2">
+                        <p:outputLabel value="Descrição:"/>
+                        <p:inputText value="#{ statusPedidoMB.status.descricao}" size="35"/>
+                        <p:commandButton action="#{ statusPedidoMB.incluiStatus()}" update="msg form" value="Alterar" style="margin-top: 15px;"/>
+                        <p:commandButton action="#{ statusPedidoMB.resetaStatus()}" oncomplete="categoriaDialogo.hide()" value="Sair" style="margin-top: 15px; margin-left: 50px;"/>
+                      </h:panelGrid>
+                    </p:outputPanel>
+               
+                </p:dialog>
+                <p:growl id="msg"/>
+              </h:form>
+              
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

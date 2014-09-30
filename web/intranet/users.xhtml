@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+             
+                <h:form id="form2">
+                  
+                     <p:commandButton   oncomplete="cadastroDialogo.show()"  update=":form2:incluiUsers" style=" margin-bottom: 5px;" value="Incluir"/>
+                     <h3 class="title-post-page" >Lista de usuarios</h3>
+                    
+                    <p:dialog   header="Cadastro"  widgetVar="cadastroDialogo"   showEffect="fade" hideEffect="explode">
+                      <p:outputPanel id="incluiUsers"   >   
+                          <p:commandLink value="Selecionar usuario" oncomplete="cadastroUsers.show()"  styleClass="prodCss"/>
+                      <h:panelGrid columns="2" id="grid">
+                        <p:outputLabel value="Nome:"  styleClass="prodCss"/>
+                        <p:inputText value="#{ usersMB.pessoa.nome}" required="true" size="30" label="nome" disabled="true"  styleClass="prodCss"/>
+                        <p:outputLabel value="Usuario:"  styleClass="prodCss" />
+                        <p:inputText value="#{ usersMB.pessoa.usuario.username}"  size="30" label="usuario" disabled="true"  styleClass="prodCss"/>
+                          <p:outputLabel value="Perfil do Usuario:"  styleClass="prodCss" />
+                          <h:selectOneMenu value="#{ usersMB.pessoa.usuario.authority}"  styleClass="prodCss"  >
+                             <f:selectItem   itemValue="ROLE_ADMIN" itemLabel="Gerente"/>
+                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Vendedor"/>
+                             <f:selectItem   itemValue="ROLE_CLIENTE"   itemLabel="Cliente"/>
+                          </h:selectOneMenu>
+                          <p:outputLabel value="Senha:"  styleClass="prodCss"/>
+                          <p:password value="#{ usersMB.pessoa.usuario.password}"  size="30" label="Descricao"  styleClass="prodCss" />
+                          <p:outputLabel value="Confirma:"  styleClass="prodCss"/>
+                          <p:password value="#{ usersMB.confirmaSenha}"  size="30" label="Descricao"  styleClass="prodCss" />
+                          
+                          <p:commandButton action="#{ usersMB.incluiUsuario()}" update=":form2 :form" value="incluir" style="margin-top: 15px;"/>             
+                      </h:panelGrid>
+                    
+                      </p:outputPanel>
+                    </p:dialog>
+                   <p:growl  id="msgs"/>
+              </h:form>
+              <h:form id="form3">
+                   <p:dialog   header="Lista de usuarios"  widgetVar="cadastroUsers"  showEffect="fade" hideEffect="explode" > 
+                          <p:dataTable var="user" value="#{ usersMB.findByUsersTodos()}" style="margin-top: 15px;">
+                              <p:column  filterBy="#{user.id}"     headerText="Código:" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                 <h:outputLabel value="#{user.id}"/> 
+                              </p:column>
+                              <p:column  filterBy="#{user.nome}"     headerText="Nome:" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                  <h:outputLabel value="#{user.nome}"/> 
+                              </p:column>
+                              <p:column  filterBy="#{user.email}"     headerText="Email:" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                  <h:outputLabel value="#{user.email}"/> 
+                              </p:column>
+                              <p:column  headerText="Editar" style="color:#003399;" width="10">
+                                  <p:commandLink update=":form2:incluiUsers" action="#{usersMB.setaPessoaParaEdicao(user)}" oncomplete="cadastroUsers.hide()" title="Selecionar" >  
+                                   <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                                 </p:commandLink> 
+                              </p:column> 
+                          </p:dataTable>
+                   </p:dialog>            
+              </h:form>
+              <h:form id="form" style="margin-top: 20px;">
+                  <div class="short-table white">
+                    
+                  <p:dataTable var="user" value="#{ usersMB.findByUsers()}" style="margin-top: 5px;">
+
+                       
+                      <p:column  filterBy="#{user.id}"     headerText="Código Cliente" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                          <h:outputLabel value="#{user.id}"/> 
+                      </p:column>
+                      <p:column  filterBy="#{user.nome}"     headerText="Nome" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                          <h:outputLabel value="#{user.nome}"/> 
+                      </p:column>
+                      <p:column  filterBy="#{user.usuario.username}"     headerText="Usuario" filterMatchMode="contains" style="color:#003399;"   >
+                          <h:outputLabel value="#{user.usuario.username}"/> 
+                   </p:column>
+                      <p:column  filterBy="#{user.usuario.authority}"     headerText="Perfil" filterMatchMode="contains" style="color:#003399;"   >
+                          <h:outputLabel value="#{user.usuario.authority}"/> 
+                   </p:column>
+                   <p:column  headerText="Editar" style="color:#003399;" width="10">
+                       <p:commandLink update=":form4:edicaoUsers"  action="#{usersMB.setaPessoaParaEdicao(user)}"  oncomplete="usersDialogo.show()" title="Editar" >  
+                       <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                       </p:commandLink> 
+                   </p:column> 
+                </p:dataTable>
+                </div>
+                 
+                <p:growl id="msg"/>
+              </h:form>
+              <h:form id="form4">
+                    <p:dialog   header="Edição de Usuarios"  widgetVar="usersDialogo" modal="true"  showEffect="fade" hideEffect="explode" closable="false">                         
+                    <p:outputPanel id="edicaoUsers"  layout="block" >   
+                        <h:panelGrid columns="2" >
+                        <p:outputLabel value="Nome:"  styleClass="prodCss"/>
+                        <p:inputText value="#{ usersMB.pessoa.nome}" required="true" size="30" label="nome" disabled="true"  styleClass="prodCss"/>
+                        <p:outputLabel value="Usuario:"  styleClass="prodCss" />
+                        <p:inputText value="#{ usersMB.pessoa.usuario.username}"  size="30" label="usuario" disabled="true"  styleClass="prodCss"/>
+                          <p:outputLabel value="Perfil do Usuario:"  styleClass="prodCss" />
+                          <h:selectOneMenu value="#{ usersMB.pessoa.usuario.authority}"  styleClass="prodCss">
+                             <f:selectItem   itemValue="ROLE_ADMIN" itemLabel="Gerente"/>
+                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Vendedor"/>
+                             <f:selectItem   itemValue="ROLE_CLIENTE"   itemLabel="Cliente"/>
+                          </h:selectOneMenu>
+                          <p:outputLabel value="Senha:"  styleClass="prodCss"/>
+                          <p:password value="#{ usersMB.pessoa.usuario.password}"  size="30" label="Descricao"  styleClass="prodCss" />
+                          <p:outputLabel value="Confirma:"  styleClass="prodCss"/>
+                          <p:password value="#{ usersMB.confirmaSenha}"  size="30" label="Descricao"  styleClass="prodCss" />
+                          
+                          <p:commandButton action="#{ usersMB.incluiUsuario()}" update=":form"  oncomplete="usersDialogo.hide()" value="incluir" style="margin-top: 15px;"/>             
+                          <p:commandButton  update=":form"  oncomplete="usersDialogo.hide()"  action="#{usersMB.reseta()}" value="Sair"  style="margin-top: 15px; margin-left: 150px;"/>             
+                      </h:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+               <p:growl id="msgs"/>
+              </h:form>
+               
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

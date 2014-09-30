@@ -1,0 +1,67 @@
+
+  <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+           <h2>Pessoa Fisica</h2>
+           <h:form id="formc">
+                 
+                  <p:growl id="msgs"/>
+                  <p:panelGrid columns="4" style="background-color:  #f4f4f4;">
+                      <p:outputLabel value="Nome*:"/> 
+                      <p:inputText value="#{ clienteMB.fisica.nome}" required="true" id="nome" label="Nome" size="30"/>
+                      <p:outputLabel  value="CPF*:"/> 
+                      <p:inputMask value="#{clienteMB.fisica.cpf}" mask="999.999.999-99" required="true"  id="cpf" label="CPF"/>
+                      <p:outputLabel  value="RG:"/> 
+                      <p:inputText value="#{clienteMB.fisica.rg}"  id="rg" label="RG" size="25"/>  
+                      <p:outputLabel value="Email*:"/>
+                      <p:inputText value="#{ clienteMB.fisica.email}" required="true"  size="30" label="Email"/>
+                      <p:outputLabel value="Endereço*:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.logradouro}" required="true" id="logradouro" label="Endereco"  size="35"/>
+                      <p:outputLabel value="Numero*:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.numero}" required="true" label="Numero" size="15"/> 
+                      <p:outputLabel value="Bairro*:"/>
+                      <p:inputText value="#{ clienteMB.endereco.bairro}" required="true" id="bairro" label="Bairro" size="20"/>
+                      <p:outputLabel value="Cidade*:"/> 
+                      <p:inputText value="#{clienteMB.endereco.cidade}" required="true" id="cidade" label="Cidade" size="20"/>
+                      <p:outputLabel value="Estado:"/>
+                      <h:selectOneMenu value="#{ clienteMB.endereco.estado}"  converter="#{ converterMB}" >
+                          <f:selectItems value="#{  estadoMB.findByAllEstado() }"
+                               var="estado"
+                               itemValue="#{estado}"
+                               itemLabel="#{estado.sigla}"   />
+                      </h:selectOneMenu> 
+                      <p:outputLabel value="Cep*:"/> 
+                      <p:inputMask value="#{ clienteMB.endereco.cep}" mask="99.999.999" required="true" id="cep" label="CEP" size="15"/>
+                      <p:outputLabel value="Complemento:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.complemento}"  size="30"/> 
+                      
+              </p:panelGrid> 
+                  <p>Lista de Telefones</p>
+                 
+                    <p:outputLabel value="Telefone:"/> 
+                    <p:inputMask value="#{ clienteMB.telefone.numeroTel}" id="txt_telefone" mask="(99)-9999-9999" size="14"/>
+                    <p:commandLink value="Adicionar"  action="#{clienteMB.adicionaTelefone()}" update=":formc "    style=" margin-left: 10px;">
+                      
+                    </p:commandLink>
+                    <p:dataTable var="telefones"  value="#{clienteMB.fisica.telefones}" id="tbTel" style=" margin-top: 15px;">
+                      <p:column       headerText="Telefone"  style="color:#003399;" width="20"  >
+                          <h:outputLabel value="#{telefones.numeroTel}"/> 
+                     </p:column>
+                      <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                          <p:commandButton update="tbTel" value="Excluir"  action="#{clienteMB.fisica.telefones.remove(telefones)}" />
+                      </p:column>  
+                    </p:dataTable>
+                  
+                    
+                  <p:commandButton   action="#{ clienteMB.incluiCliente()}" 
+                                     value="Incluir Cliente"  update="msgs formc  "   style="margin-top: 10px;  margin-left: 10px;"/> 
+                  <p:outputLabel value="* Campos Obrigatórios" style="color: crimson ; margin-left:  180px;" />
+                 
+        </h:form> 
+         
+         
+       
+</ui:composition>

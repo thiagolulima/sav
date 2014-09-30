@@ -1,0 +1,73 @@
+
+  <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+           <h2>Pessoa Juridica</h2>
+           <h:form id="formcj">
+                 
+                  <p:growl id="msgs"/>
+                  <p:panelGrid columns="4" style="background-color:  #f4f4f4;">
+                      <p:outputLabel value="Razão Social*:"/> 
+                      <p:inputText value="#{ clienteMB.juridica.nome}" required="true" id="nome" label="Nome" size="30"/>
+                      <p:outputLabel  value="CNPJ*:"/> 
+                      <p:inputMask value="#{clienteMB.juridica.cnpj}" mask="99.999.999/9999-99" required="true"  id="cnpj" label="CNPJ"/>
+                      <p:outputLabel  value="Nome Fantasia:"/> 
+                      <p:inputText value="#{clienteMB.juridica.nomeFantasia}"  id="NomeFantasia" label="Nome Fantasia" size="25"/>  
+                      <p:outputLabel  value="Inscrição Estadual:"/> 
+                      <p:inputText value="#{clienteMB.juridica.inscricaoEstadual}"  id="ie" label="Incricao Estadual" size="25"/>  
+                      <p:outputLabel  value="Inscrição Municipal:"/> 
+                      <p:inputText value="#{clienteMB.juridica.inscricaoMunicipal}"  id="im" label="Inscrição Municipal" size="25"/>  
+                      <p:outputLabel  value="Contato:"/> 
+                      <p:inputText value="#{clienteMB.juridica.contato}"  id="contato" label="Contato" size="25"/>  
+                      <p:outputLabel value="Email*:"/>
+                      <p:inputText value="#{ clienteMB.juridica.email}" required="true"  size="30" label="Email"/>
+                      <p:outputLabel value="Endereço*:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.logradouro}" required="true" id="logradouro" label="Endereco"  size="35"/>
+                      <p:outputLabel value="Numero*:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.numero}" required="true" label="Numero" size="15"/> 
+                      <p:outputLabel value="Bairro*:"/>
+                      <p:inputText value="#{ clienteMB.endereco.bairro}" required="true" id="bairro" label="Bairro" size="20"/>
+                      <p:outputLabel value="Cidade*:"/> 
+                      <p:inputText value="#{clienteMB.endereco.cidade}" required="true" id="cidade" label="Cidade" size="20"/>
+                      <p:outputLabel value="Estado:"/>
+                      <h:selectOneMenu value="#{ clienteMB.endereco.estado}"  converter="#{ converterMB}" >
+                          <f:selectItems value="#{  estadoMB.findByAllEstado() }"
+                               var="estado"
+                               itemValue="#{estado}"
+                               itemLabel="#{estado.sigla}"   />
+                      </h:selectOneMenu> 
+                      <p:outputLabel value="Cep*:"/> 
+                      <p:inputMask value="#{ clienteMB.endereco.cep}" mask="99.999.999" required="true" id="cep" label="CEP" size="15"/>
+                      <p:outputLabel value="Complemento:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.complemento}"  size="30"/> 
+                      
+              </p:panelGrid> 
+                  <p>Lista de Telefones</p>
+                 
+                    <p:outputLabel value="Telefone:"/> 
+                    <p:inputMask value="#{ clienteMB.telefone.numeroTel}" id="txt_telefone" mask="(99)-9999-9999" size="14"/>
+                    <p:commandLink value="Adicionar"  action="#{clienteMB.adicionaTelefoneJuridica()}" update=":formcj "    style=" margin-left: 10px;">
+                      
+                    </p:commandLink>
+                    <p:dataTable var="telefones"  value="#{clienteMB.juridica.telefones}" id="tbTel" style=" margin-top: 15px;">
+                      <p:column       headerText="Telefone"  style="color:#003399;" width="20"  >
+                          <h:outputLabel value="#{telefones.numeroTel}"/> 
+                     </p:column>
+                      <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                          <p:commandButton update="tbTel" value="Excluir"  action="#{clienteMB.juridica.telefones.remove(telefones)}" />
+                      </p:column>  
+                    </p:dataTable>
+                  
+                    
+                  <p:commandButton   action="#{ clienteMB.incluiClienteJuridica()}" 
+                                     value="Incluir Cliente"  update="msgs formcj  "   style="margin-top: 10px;  margin-left: 10px;"/> 
+                  <p:outputLabel value="* Campos Obrigatórios" style="color: crimson ; margin-left:  180px;" />
+                 
+        </h:form> 
+         
+         
+       
+</ui:composition>

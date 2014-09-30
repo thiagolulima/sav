@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+                <p:commandButton  action="#{ produtoMB.resetaProduto()}" oncomplete="cadastroDialogo.show()"   style="margin-bottom: 5px;" value="Incluir"/>
+                <h:form id="form2">
+                     <p:dialog   header="Cadastro"  widgetVar="cadastroDialogo" modal="true"  showEffect="fade" hideEffect="explode">
+                        <h:panelGrid columns="2">   
+                            <p:outputLabel value="Codigo:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.codProduto}" required="true" label="codigo" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Descrição:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.descricao}" required="true" label="descricao" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Numero de Série:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.numeroSerie}" required="true" label="NumeroSerie" styleClass="prodCss" size="35"/>
+                            <h:outputLabel value="Categoria:"  styleClass="prodCss" />
+                            <h:selectOneMenu value="#{ produtoMB.produto.categoria}" converter="#{ converterProdutoMB}"  styleClass="prodCss">
+                                <f:selectItems value="#{ categoriaMB.findByAllCategoria()}"
+                                  var="categoria"
+                                  itemValue="#{categoria}"
+                                  itemLabel="#{categoria.descricao}"   />
+                             </h:selectOneMenu> 
+                            <p:outputLabel value="Valor:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.valor}" required="true" label="Valor"  styleClass="prodCss"/>
+                            <p:commandButton action="#{ produtoMB.incluiProduto()}" update="msgs :form" value="Incluir" style="margin-top: 15px;"/>
+                        </h:panelGrid>   
+                     </p:dialog>
+                    <p:growl id="msgs"/>
+                </h:form>
+                <h:form>
+                 <h:panelGrid columns="4" style=" margin-top: 15px; margin-bottom: 15px;">
+                  <p:outputLabel value="Filtro"/>
+                  <p:selectOneMenu value="#{produtoMB.tipoPesquisa}"   style="margin-left: 5px;" >
+                    <f:selectItem itemLabel="Selecione" itemValue="0"/>
+                    <f:selectItem itemLabel="Codigo" itemValue="1"/>
+                    <f:selectItem itemLabel="Descrição" itemValue="2"/>
+                    <f:selectItem itemLabel="Numero de Série" itemValue="3"/>
+                    <f:selectItem itemLabel="Categoria" itemValue="4"/> 
+                  </p:selectOneMenu>
+                  <p:inputText value="#{produtoMB.pesquisa}" style="margin-left: 5px;" >
+                  </p:inputText>
+                  <p:commandButton update=":form "  value="pesquisar" style="margin-left: 5px;" />
+                </h:panelGrid>
+                </h:form>
+                   <h:form id="form" style="margin-top: 25px; ">
+                       
+                       <p:dataTable var="produto"  id="tabela" value="#{ produtoMB.finByAllProduto()}" style="margin-top: 15px; ">
+                       <f:facet name="header">
+                           <h3>Lista de produtos</h3>
+                       </f:facet>
+                           <p:column  filterBy="#{produto.codProduto}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                               <h:outputLabel value="#{produto.codProduto}"/> 
+                           </p:column>
+                           <p:column  filterBy="#{produto.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.descricao}"/> 
+                          </p:column>
+                           <p:column  filterBy="#{produto.numeroSerie}"     headerText="Numero de Série" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.numeroSerie}"/> 
+                          </p:column>
+                           <p:column  filterBy="#{produto.categoria.descricao}"     headerText="Categoria" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{produto.categoria.descricao}"/> 
+                          </p:column>
+                         <p:column  headerText="Editar" style="color:#003399;" width="10">
+                           <p:commandLink update=":form:edicaoProduto" oncomplete="produtoDialogo.show()" title="Editar" >  
+                           <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                           <f:setPropertyActionListener value="#{produto}"   
+                                                        target="#{ produtoMB.produto}" />  
+                          </p:commandLink> 
+                        </p:column>
+                    
+                </p:dataTable>
+                   <p:dialog   header="Edição de Produto"  widgetVar="produtoDialogo" modal="true"  showEffect="fade" hideEffect="explode" closable="false">  
+                  
+                    <p:outputPanel id="edicaoProduto"  layout="block" >   
+                       <h:panelGrid columns="2">   
+                           <p:outputLabel value="Codigo:" styleClass="prodCss"/>
+                           <p:inputText value="#{produtoMB.produto.codProduto}" label="codigo" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Descrição:" styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.descricao}"  label="descricao" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Numero de Série:"/>
+                            <p:inputText value="#{produtoMB.produto.numeroSerie}"  label="NumeroSerie" styleClass="prodCss" size="35"/>
+                            <h:outputLabel value="Categoria:"  styleClass="prodCss"/>
+                            <h:selectOneMenu value="#{ produtoMB.produto.categoria}" converter="#{ converterProdutoMB}" styleClass="prodCss">
+                                <f:selectItems value="#{ categoriaMB.findByAllCategoria()}"
+                                  var="categoria"
+                                  itemValue="#{categoria}"
+                                  itemLabel="#{categoria.descricao}"   />
+                             </h:selectOneMenu> 
+                             <h:outputLabel value="Valor:"  styleClass="prodCss"/>
+                            <p:inputText value="#{produtoMB.produto.valor}" label="Valor" styleClass="prodCss" />
+                            <p:commandButton action="#{ produtoMB.alteraProduto()}" update="msg :form" value="Alterar" style="margin-top: 15px;"/>
+                            <p:commandButton action="#{ produtoMB.resetaProduto()}"  value="Sair" oncomplete="produtoDialogo.hide()" style="margin-top: 15px; margin-left: 150px;"/>
+                        </h:panelGrid>  
+                    </p:outputPanel>
+                </p:dialog>
+                <p:growl id="msg"/>
+              </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

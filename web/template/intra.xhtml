@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[if IE 6]>
+<html id="ie6" class="ie" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" class="ie" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" class="ie" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if IE 9]>
+<html id="ie9" class="ie" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if gt IE 9]>
+<html class="ie" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if !IE]>
+<html dir="ltr" lang="en-US">
+<![endif]-->
+    
+    <!-- START HEAD -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <!-- this line will appear only if the website is visited with an iPad -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.2, user-scalable=yes" />
+        
+        <title>Peg Informatika</title>
+        
+        <!-- [favicon] begin -->
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+        <!-- Touch icons more info: http://mathiasbynens.be/notes/touch-icons -->
+        <!-- For iPad3 with retina display: -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x.png" />
+        <!-- For first- and second-generation iPad: -->
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x.png" />
+        <!-- For first- and second-generation iPad: -->
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x.png" />
+        <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+        <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x.png" />
+        <!-- [favicon] end -->
+        
+        <!-- CSSs -->
+        <link rel="stylesheet" type="text/css" media="all" href="${facesContext.externalContext.request.contextPath}/resources/css/reset.css" /> <!-- RESET STYLESHEET -->
+        <link rel="stylesheet" type="text/css" media="all" href="${facesContext.externalContext.request.contextPath}/resources/css/style.css" /> <!-- MAIN THEME STYLESHEET -->
+        <link rel="stylesheet" id="max-width-1024-css" href="${facesContext.externalContext.request.contextPath}/resources/css/max-width-1024.css" type="text/css" media="screen and (max-width: 1240px)" />
+        <link rel="stylesheet" id="max-width-768-css" href="${facesContext.externalContext.request.contextPath}/resources/css/max-width-768.css" type="text/css" media="screen and (max-width: 987px)" />
+        <link rel="stylesheet" id="max-width-480-css" href="${facesContext.externalContext.request.contextPath}/resources/css/max-width-480.css" type="text/css" media="screen and (max-width: 480px)" />
+        <link rel="stylesheet" id="max-width-320-css" href="${facesContext.externalContext.request.contextPath}/resources/css/max-width-320.css" type="text/css" media="screen and (max-width: 320px)" />
+        
+        <!-- CSSs Plugin -->
+        <link rel="stylesheet" id="thickbox-css" href="${facesContext.externalContext.request.contextPath}/resources/css/thickbox.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="styles-minified-css" href="${facesContext.externalContext.request.contextPath}/resources/css/style-minifield.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="buttons" href="${facesContext.externalContext.request.contextPath}/resources/css/buttons.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="cache-custom-css" href="${facesContext.externalContext.request.contextPath}/resources/css/cache-custom.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="custom-css" href="${facesContext.externalContext.request.contextPath}/resources/css/custom.css" type="text/css" media="all" />
+	    
+        <!-- FONTs -->
+        <link rel="stylesheet" id="google-fonts-css" href="http://fonts.googleapis.com/css?family=Oswald%7CDroid+Sans%7CPlayfair+Display%7COpen+Sans+Condensed%3A300%7CRokkitt%7CShadows+Into+Light%7CAbel%7CDamion%7CMontez&amp;ver=3.4.2" type="text/css" media="all" />
+        <link rel='stylesheet' href='${facesContext.externalContext.request.contextPath}/resources/css/font-awesome.css' type='text/css' media='all' />
+        
+        <!-- JAVASCRIPTs -->
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/comment-reply.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.quicksand.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.tipsy.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.prettyPhoto.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.cycle.min.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.anythingslider.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.eislideshow.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.flexslider-min.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.aw-showcase.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/layerslider.kreaturamedia.jquery-min.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/shortcodes.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.colorbox-min.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.tweetable.js"></script>
+       
+    </h:head>
+    <!-- START BODY -->
+    <h:body class="no_js responsive stretched">
+        
+        <!-- START BG SHADOW -->
+        <div class="bg-shadow">
+            <div id="topo" >
+                <blockquote class="text-quote-quote" style="float: right; margin-right: 15px; color:  #ffffff; font-weight: bold; ">"Soluções em Informática!"</blockquote >
+                 
+            </div>
+            <!-- START WRAPPER -->
+            <div id="wrapper" class="group">
+                
+                <!-- START HEADER -->
+                <div id="header" class="group">
+                    
+                    <div class="group inner">
+                        
+                        <!-- START LOGO -->
+                        <div id="logo" class="group">
+                            <a href="./../" title="Pink Rio"><img src="${facesContext.externalContext.request.contextPath}/resources/images/logopeg.png" title="Peg Informatika" alt="Peg Informatika" /></a>
+                        </div>
+                        <!-- END LOGO -->
+                        
+                        <div id="sidebar-header" class="group">
+                            
+                            <blockquote class="text-quote-quote" style="font-size: 25px; margin-left: 150px;">Rua Major Gote, 1901 - Patos de Minas - MG</blockquote>
+                            <blockquote class="text-quote-quote" style="font-size: 30px; margin-left: 150px;">Televendas (34)3821-6404</blockquote>
+                        </div>
+                        <div class="clearer"></div>
+                        
+                        <hr />
+                        
+                        <!-- START MAIN NAVIGATION -->
+                        
+                        <div class="menu classic"  >
+                            
+                            <ul id="nav" class="menu"  style=" margin-left: 50px;" >
+                                
+                                <li>
+                                    <a href="./../">HOME</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="#">CADASTROS</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="cliente.xhtml">Clientes</a></li>
+                                        <li><a href="categoria.xhtml">Categoria</a></li>
+                                        <li><a href="produto.xhtml">Produto</a></li>
+                                        <li><a href="users.xhtml">Usuários</a></li>
+                                        <li><a href="status.xhtml">Status</a></li>
+                                        
+                                        
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <a href="#">ORÇAMENTO</a>
+                                </li>
+                                <li>
+                                    <a href="pedido.xhtml">PEDIDO DE VENDA</a>
+                                </li>
+                                <li>
+                                    <a href="#">RELATÓRIOS</a>
+                                </li>
+                                <li>
+                                    <a href="#">CONFIGURAÇÃO</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- END MAIN NAVIGATION -->
+                        <div id="header-shadow">
+                            <center> <img src="${facesContext.externalContext.request.contextPath}/shadow-938.png"></img></center>
+                        </div>
+                        <div id="menu-shadow"></div>
+                    </div>
+                    
+                </div>
+                <!-- END HEADER -->
+                  
+                <div id="conteudo" style=" margin:  auto;">
+                 
+                    <ui:insert name="conteudo" />
+                 
+            
+                </div>
+                      
+              
+                				
+	<!-- START COPYRIGHT -->
+                <div id="copyright">
+                    <div class="inner group">
+                        <div class="left">
+                            <strong> Peg Informatika LTDA - Rua Major Gote, 1901 - Patos de Minas - MG, Brasil</strong>
+                        </div>
+                        <div class="right">
+                            <a href="#" class="socials-small facebook-small" title="Facebook">facebook</a>
+                            <a href="#" class="socials-small rss-small" title="Rss">rss</a>
+                            <a href="#" class="socials-small twitter-small" title="Twitter">twitter</a>
+                            <a href="#" class="socials-small flickr-small" title="Flickr">flickr</a>
+                            <a href="#" class="socials-small skype-small" title="Skype">skype</a>
+                            <a href="#" class="socials-small google-small" title="Google">google</a>
+                            <a href="#" class="socials-small pinterest-small" title="Pinterest">pinterest</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END COPYRIGHT -->
+            </div>
+            <!-- END WRAPPER -->
+        </div>
+        <!-- END BG SHADOW -->
+        
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.custom.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/contact.js"></script>
+        <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.mobilemenu.js"></script> 
+        
+    </h:body>
+    <!-- END BODY -->
+</html>

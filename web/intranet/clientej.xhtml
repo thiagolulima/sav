@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+                <div id="clientes">
+                   <h2 style="text-align: center;">Cadastro de Clientes</h2>
+                   <h:form>
+                    <h:panelGrid columns="4" style=" margin-top: 15px; margin-bottom: 15px;">
+                      <p:outputLabel value="Filtro"/>
+                      <p:selectOneMenu value="#{ clienteMB.tipoPesquisa}" id="sel"  style="margin-left: 5px;" >
+                       <f:selectItem itemLabel="Selecione" itemValue="0"/>
+                       <f:selectItem itemLabel="Codigo" itemValue="1"/>
+                       <f:selectItem itemLabel="Razão Social" itemValue="2"/>
+                       <f:selectItem itemLabel="CNPJ" itemValue="3"/>       
+                       <f:selectItem itemLabel="Nome Fantasia" itemValue="4"/>       
+                      </p:selectOneMenu>
+                      <p:inputText value="#{clienteMB.pesquisa}" style="margin-left: 5px;" >
+                      </p:inputText>
+                      <p:commandButton update=":form:tabela"  value="pesquisar" style="margin-left: 5px;" />
+                     </h:panelGrid>
+                   </h:form>
+                      <h:form id="form" styleClass="table"> 
+                          <p:outputLabel value="Listagem de :           " style=" font-size: 18px; "/>
+                <p:commandLink value="Pessoa Juridica"  action="#{clienteMB.redirecionaClienteJuridica()}"  
+                                 style="margin-left: 15px; margin-top: 20px; margin-bottom: 20px;" />
+                <p:commandLink value="Pessoa Fisica"  action="#{clienteMB.redirecionaClienteFisica()}"  
+                                 style="margin-left: 15px; margin-top: 20px; margin-bottom: 20px;" />
+                <p:commandButton value="Incluir"  action="#{clienteMB.resetaCliente()}"    oncomplete="cadastro.show()"
+                                 style=" margin-right: 30px; margin-top: 20px; margin-bottom: 20px; float: right;" />
+                
+               
+           
+                <p:dataTable id="tabela" value="#{clienteMB.findByAllClienteJuridica()}" var="cliente" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
+                 <f:facet name="header">  
+                      <h2>Lista de clientes pessoa jurídica </h2>
+                 </f:facet>  
+                 <p:column  filterBy="#{cliente.id}"     headerText="Codigo cliente" filterMatchMode="contains" style="color:#003399;" width="20"  >
+                         <h:outputLabel value="#{cliente.id}"/> 
+                 </p:column>
+                    <p:column  filterBy="#{cliente.nome}"    headerText="Razão Social" filterMatchMode="contains" style="color:#003399;">
+                        <h:outputLabel value="#{cliente.nome}"/> 
+                    </p:column>
+                    <p:column filterBy="#{cliente.cnpj}" width="15" headerText="CNPJ " filterMatchMode="contains" style="color:#003399;" >
+                        <h:outputLabel value="#{cliente.cnpj}"/> 
+                    </p:column>
+                    <p:column filterBy="#{cliente.nomeFantasia}" width="15" headerText="Nome Fantasia " filterMatchMode="contains" style="color:#003399;" >
+                        <h:outputLabel value="#{cliente.nomeFantasia}"/> 
+                    </p:column>
+                 <p:column  headerText="Editar" style="color:#003399;" width="15">
+                       <p:commandLink update=":form:edicaoCliente" oncomplete="clienteDialogo.show()" title="Editar" action="#{clienteMB.adicionaEnderecoEstadoClientejParaEdicao()}">  
+                       <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                       <f:setPropertyActionListener value="#{cliente}"   
+                                                    target="#{ clienteMB.juridica}" />  
+                       </p:commandLink> 
+                    </p:column>
+                  <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                        <p:commandButton update=":form:exclusaoCliente" value="Excluir"  action="#{clienteMB.setaClienteJuridicaParaExclusao(cliente)}"  oncomplete="confirmation.show()" />
+                   </p:column>  
+                </p:dataTable>
+                <p:dialog  header="Exclusao de Cliente" widgetVar="confirmation"  modal="true">  
+                   <p:outputPanel id="exclusaoCliente" layout="block">
+                    <p:outputLabel value="Deseja realmente excluir:" /><br/>
+                    <p:outputLabel value="#{ clienteMB.mensagemConfirmaExclusaoJuridica()}" /> <br/>
+                     <p:commandButton id="btnSim" value="Sim"   action="#{clienteMB.excluiClienteJuridica()}"  update="form"  oncomplete="confirmation.hide()" ajax="false"   />  
+                     <p:commandButton id="btnNao" value="Não"  onclick="confirmation.hide()"  type="button" ajax="false" style="margin-left: 20px;"/> 
+                   </p:outputPanel>
+                </p:dialog>
+                
+               <p:dialog   header="Edição de Cliente"  widgetVar="clienteDialogo" modal="true"  showEffect="fade" hideEffect="explode">  
+               <p:outputPanel id="edicaoCliente"  layout="block" >        
+                  <h:panelGrid  columns="4" cellpadding="5"  style="color:#003399;"> 
+                      <h:outputLabel for="nome" value="Razão Social  " />  
+                      <p:inputText id="nome" value="#{ clienteMB.juridica.nome}"  size="30" label="Nome" />  
+                      <h:outputLabel for="cadastroNacional" value="CNPJ: " />  
+                      <p:inputText id="cadastroNacional" value="#{ clienteMB.juridica.cnpj}" size="25" />
+                      <h:outputLabel for="nomef" value="Nome Fantasia: " />  
+                      <p:inputText id="nomef" value="#{ clienteMB.juridica.nomeFantasia}" size="25" />   
+                      <h:outputLabel for="ie" value="Inscrição Estadual: " />  
+                      <p:inputText id="ie" value="#{ clienteMB.juridica.inscricaoEstadual}" size="25" />   
+                      <h:outputLabel for="im" value="Inscrição Municipal: " />  
+                      <p:inputText id="im" value="#{ clienteMB.juridica.inscricaoMunicipal}" size="25" />   
+                      <h:outputLabel for="contato" value="Contato: " />  
+                      <p:inputText id="contato" value="#{ clienteMB.juridica.contato}" size="25" />   
+                      <p:outputLabel for="txt_email" value="Email:"/>
+                      <p:inputText value="#{ clienteMB.juridica.email}" id="txt_email" size="30"/>
+                      <p:outputLabel  for="logradouro" value="Endereço:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.logradouro}" id="logradouro" size="35"/>
+                      <p:outputLabel for="numero" value="Numero:"/> 
+                      <p:inputText value="#{ clienteMB.endereco.numero}" id="numero" size="15"/> 
+                      <p:outputLabel for="bairro" value="Bairro:"/>
+                      <p:inputText value="#{ clienteMB.endereco.bairro}"  id="bairro" size="20"/>
+                      <p:outputLabel for="cidade" value="Cidade:"/> 
+                      <p:inputText value="#{clienteMB.endereco.cidade}"  id="cidade" size="20"/>
+                      <h:outputLabel value="Estado" />
+                      <h:selectOneMenu value="#{ clienteMB.endereco.estado}" converter="#{ converterMB}">
+                          <f:selectItems value="#{estadoMB.findByAllEstado()}"
+                               var="estado"
+                               itemValue="#{estado}"
+                               itemLabel="#{estado.sigla}"   />
+                     </h:selectOneMenu> 
+                     <p:outputLabel for="cep" value="Cep:"/> 
+                     <p:inputMask value="#{ clienteMB.endereco.cep}" mask="99.999.999"  id="cep" size="15"/>
+                     <p:outputLabel  value="Complemento:"/> 
+                     <p:inputText value="#{ clienteMB.endereco.complemento}" size="35"/> 
+                     
+                     <p:growl id="msgs"/>
+                 </h:panelGrid>
+                   <p>Lista de Telefones</p>
+                 
+                    <p:outputLabel value="Telefone:"/> 
+                    <p:inputMask value="#{ clienteMB.telefone.numeroTel}" id="txt_telefone" mask="(99)-9999-9999" size="14"/>
+                    <p:commandLink value="Adicionar"  action="#{clienteMB.adicionaTelefoneJuridica()}" update="tbTel "    style=" margin-left: 10px;">
+                      
+                    </p:commandLink>
+                    <p:dataTable var="telefones"  value="#{clienteMB.juridica.telefones}" id="tbTel" style=" margin-top: 15px;">
+                      <p:column       headerText="Telefone"  style="color:#003399;" width="20"  >
+                          <h:outputLabel value="#{telefones.numeroTel}"/> 
+                     </p:column>
+                      <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                          <p:commandButton update="tbTel" value="Excluir"  action="#{clienteMB.juridica.telefones.remove(telefones)}" />
+                      </p:column>  
+                    </p:dataTable>
+                    <p:commandButton  action="#{ clienteMB.editaClienteJuridica()}" value="Salvar alteração"  update="msgs form" style="margin-top: 10px;" />
+               </p:outputPanel>  
+           </p:dialog>
+         </h:form>       
+         <p:dialog   header="Cadastro"  widgetVar="cadastro" modal="true" showEffect="fade" hideEffect="explode" > 
+             <h2>Selecione tipo de cliente</h2>
+     <p:commandButton value="Juridica"  action="#{clienteMB.resetaCliente()}"    oncomplete="cadastroJuridica.show()" onclick="cadastro.hide()"  style="margin-left: 10px;"/>
+             <p:commandButton value="Física"  action="#{clienteMB.resetaCliente()}"    oncomplete="cadastroFisica.show()" onclick="cadastro.hide()" style="margin-left: 35px;" />
+          </p:dialog>            
+         <p:dialog   header="Cadastro"  widgetVar="cadastroJuridica" modal="true" showEffect="fade" hideEffect="explode" > 
+               <ui:include src="cliente/juridica.xhtml"/>
+          </p:dialog>            
+         <p:dialog   header="Cadastro"  widgetVar="cadastroFisica" modal="true" showEffect="fade" hideEffect="explode" > 
+               <ui:include src="cliente/fisica.xhtml"/>
+          </p:dialog>                 
+         </div>
+       </ui:define>
+      </ui:composition>
+    </body>
+</html>

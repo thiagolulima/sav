@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../template/home.xhtml">
+
+            <ui:define name="conteudo">
+                <h2 style="text-align:  center; color:  #941010;">Usuário ou senha inválidos.</h2>
+              <div class="formulario">
+                
+                  <h2 style=" float: left; color: #003366;  margin-left: 100px; margin-top: 40px; " >Acessar minha área</h2>
+                  <form action="../j_spring_security_check" method="post"  >
+                      <div id="campForm" style=" float:  left;">
+                          <h:outputText value="Login:" style=" float: left;  color: #003366; font-size:  17px; margin-left: 10px; margin-top: 40px;"/>
+                          <h:inputText id="j_username" size="23"  maxlength="50" style=" float: left; color: #003366; margin-left: 10px; font-size: 25px; margin-top: 40px; " />
+                        <h:outputText value="Senha:" style=" float: left;  color: #003366; font-size:  17px; margin-left: 15px; margin-top: 15px; " />
+                        <h:inputSecret id="j_password" size="18"  style=" float: left; margin-left: 3px; font-size: 25px; margin-top: 15px; " />
+                        <input type="submit" value="Ok"   style=" float: left; margin-top: 15px; "/>
+                      </div>
+                </form>
+                
+              </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
