@@ -84,13 +84,19 @@
        
     </h:head>
     <!-- START BODY -->
-    <h:body class="no_js responsive stretched">
+    <h:body class="no_js responsive stretched" >
         
         <!-- START BG SHADOW -->
         <div class="bg-shadow">
             <div id="topo" >
+                <div style="float:left; color:  #ffffff; font-weight: bold; margin-left: 70px;  font-size: 15px;">  
+                    Bem vindo   
+                    <p:outputLabel value="#{usuarioMB.pessoa.nome}"/>
+                    
+                    <a href="./../logout" title="sair"   style="font-size: 15px; color: #ffffff; margin-left: 15px;  ">Sair</a>
+                
+                </div>
                 <blockquote class="text-quote-quote" style="float: right; margin-right: 15px; color:  #ffffff; font-weight: bold; ">"Soluções em Informática!"</blockquote >
-                 
             </div>
             <!-- START WRAPPER -->
             <div id="wrapper" class="group">
@@ -143,7 +149,7 @@
                                     <a href="#">EQUIPE</a>       
                                 </li>
                                 <li>
-                                    <a href="./../login">ACESSO RESTRITO</a>
+                                    <a href="./../login/verifica.xhtml">ACESSO RESTRITO</a>
                                 </li>
                                 
                                
