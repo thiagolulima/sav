@@ -10,8 +10,8 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
     <http auto-config="true" access-denied-page="/login/negado.xhtml">
         <form-login login-page="/login" authentication-failure-url="/login/falha.xhtml"/>
        
-        <intercept-url pattern="/cliente/**" access="ROLE_CLIENTE,ROLE_ADMIN" />
-        <intercept-url pattern="/intranet/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/cliente/**" access="ROLE_CLIENTE,ROLE_ADMIN,ROLE_MASTER" />
+        <intercept-url pattern="/intranet/**" access="ROLE_ADMIN,ROLE_MASTER" />
         <logout invalidate-session="true" logout-success-url="/login/verifica.xhtml" logout-url="/logout"/>
     </http>
     

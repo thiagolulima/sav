@@ -31,6 +31,18 @@ public class usuarioMB  {
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
+    public String retornaNomeLogado(){
+        String nome = ((SecurityContext) SecurityContextHolder.getContext()).
+                             getAuthentication().getName();
+         if (nome.equals( "anonymousUser" ))
+         {
+             nome = "";
+             return nome;
+         }
+         else{
+             return nome;
+         }
+    }
     public void setaFuncionarioNaSessao() throws IOException{
         try  {
                     pessoa = 
@@ -48,6 +60,7 @@ public class usuarioMB  {
                FacesContext.getCurrentInstance().getExternalContext().redirect("./login.xhtml");
              } 
     }
+  
 
     
 }
