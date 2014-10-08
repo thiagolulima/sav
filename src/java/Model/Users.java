@@ -21,6 +21,7 @@ public class Users implements Serializable {
     private String username;
     private String password;
     private String authority;
+    private boolean ativo;
 
     public Long getId() {
         return id;
@@ -52,6 +53,14 @@ public class Users implements Serializable {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
     
     @Override

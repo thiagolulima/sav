@@ -17,6 +17,7 @@ public class UsersMB {
 
     Pessoa pessoa  = new Pessoa();
     Users user = new Users();
+    public String senha;
     public String confirmaSenha ;
     @EJB
     UsersEJB ejb;
@@ -38,6 +39,14 @@ public class UsersMB {
     public void setUser(Users user) {
         this.user = user;
     }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String Senha) {
+        this.senha = Senha;
+    }
     
     public List<Pessoa> findByUsers(){
         return ejb.findByUsuarios();
@@ -54,16 +63,41 @@ public class UsersMB {
         this.confirmaSenha = confirmaSenha;
     }
     public void incluiUsuario(){
-        if(pessoa.getUsuario().getPassword().equals(confirmaSenha))
-        {
+        if(confirmaSenha.trim().equals("") && senha.trim().equals("") ){
+            adicionarMensagem(FacesMessage.SEVERITY_ERROR, "campo de senha em branco"); 
+        }else{
+              if(pessoa.getUsuario().getPassword().equals(confirmaSenha))
+               {
+                ejb.incluiUsuario(pessoa);
+                adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario incluido com sucesso!"); 
+                pessoa = new Pessoa();
+               }
+             else
+             {
+               adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Senha ou Confirmacao incorreta"); 
+             }
+         }
+    }
+    public void edicaoUser(){
+          if(confirmaSenha.trim().equals("") && senha.trim().equals("") ){
+            ejb.incluiUsuario(pessoa);
+            adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario Mantido com sucesso!"); 
+         }else{
+              if(senha.equals(confirmaSenha))
+               {
+                pessoa.getUsuario().setPassword(senha);
+                ejb.incluiUsuario(pessoa);
+                adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario Mantido com sucesso!"); 
+                pessoa = new Pessoa();
+               }
+             else
+             {
+               adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Senha ou Confirmacao incorreta"); 
+             }
+        }
+    }
+    public void incluiUserEdicao(Pessoa pessoa){
           ejb.incluiUsuario(pessoa);
-          adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario incluido com sucesso!"); 
-          pessoa = new Pessoa();
-        }
-        else
-        {
-            adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Senha ou Confirmacao incorreta"); 
-        }
     }
     public void setaPessoaParaEdicao(Pessoa pessoa){
         this.pessoa = new Pessoa();
@@ -77,6 +111,7 @@ public class UsersMB {
         else
         {
            this.pessoa.getUsuario().setUsername(pessoa.getEmail());
+           confirmaSenha = this.pessoa.getUsuario().getPassword();
         }
     }
      private void adicionarMensagem(FacesMessage.Severity severidade, String msg)

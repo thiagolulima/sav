@@ -10,8 +10,8 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
     <http auto-config="true" access-denied-page="/login/negado.xhtml">
         <form-login login-page="/login" authentication-failure-url="/login/falha.xhtml"/>
        
-        <intercept-url pattern="/cliente/**" access="ROLE_CLIENTE,ROLE_ADMIN,ROLE_MASTER" />
-        <intercept-url pattern="/intranet/**" access="ROLE_ADMIN,ROLE_MASTER" />
+        <intercept-url pattern="/cliente/**" access="ROLE_CLIENTE,ROLE_VENDEDOR,ROLE_MASTER" />
+        <intercept-url pattern="/intranet/**" access="ROLE_VENDEDOR,ROLE_MASTER" />
         <logout invalidate-session="true" logout-success-url="/login/verifica.xhtml" logout-url="/logout"/>
     </http>
     
@@ -26,7 +26,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource"
-                users-by-username-query="SELECT username, password, 'true' as enable FROM users WHERE username=?"
+                users-by-username-query="SELECT username, password, 'true' as enable FROM users WHERE username=? AND ativo = 1"
                 authorities-by-username-query="SELECT username, authority FROM users WHERE username=?"
             />
         </authentication-provider>

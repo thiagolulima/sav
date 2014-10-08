@@ -1,8 +1,10 @@
 
 package Control;
 
+import Model.Fisica;
 import Model.Funcionario;
 import Model.Pessoa;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,7 +20,6 @@ public class FuncionarioEJB {
        {
            if (verificaSeACadastradoEmail(funcionario) == false)
         {
-            
             em.merge(funcionario); 
         }
         else{
@@ -42,4 +43,35 @@ public class FuncionarioEJB {
               return false ;  
              }
          }
+       public List<Funcionario> findAllFuncionario(int tipoPesquisa, String pesquisa) throws Exception{
+        if(tipoPesquisa == 0 || pesquisa.trim().equals(""))
+          {
+            return new ArrayList<Funcionario>();
+          }
+        if (tipoPesquisa == 1)
+          {
+              try {
+                  Integer.parseInt(pesquisa);
+                 }
+              catch (Exception e)
+               {
+                    throw new Exception ("codido Inválido!");
+               } 
+            return em.createQuery("select u from Funcionario u where u.id =:id ")
+                    .setParameter("id", Integer.parseInt(pesquisa)).getResultList();
+          }
+        if (tipoPesquisa == 2)
+          {   
+            return em.createQuery("select u from Funcionario u where u.nome LIKE :nome ")
+                    .setParameter("nome", "%"+pesquisa+"%").getResultList();
+          }
+        if (tipoPesquisa == 3)
+          {   
+            return em.createQuery("select u from Funcionario u where u.cpf LIKE :cpf ")
+                    .setParameter("cpf", "%"+pesquisa+"%").getResultList();
+          }
+        
+        return new ArrayList<Funcionario>();
+    }
+    
 }

@@ -11,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 
 @ManagedBean
@@ -20,8 +21,12 @@ public class FuncionarioMB {
     private Funcionario funcionario = new Funcionario();
     private Endereco endereco = new Endereco();
     Telefones telefone = new Telefones();
+    int tipoPesquisa = 0;
+    String pesquisa = "";
     @EJB
     FuncionarioEJB ejb;
+    @Inject
+    UsersMB userMB;
     public FuncionarioMB() {
     }
 
@@ -48,9 +53,30 @@ public class FuncionarioMB {
         this.telefone = telefone;
     }
 
-    
+    public int getTipoPesquisa() {
+        return tipoPesquisa;
+    }
+
+    public void setTipoPesquisa(int tipoPesquisa) {
+        this.tipoPesquisa = tipoPesquisa;
+    }
+
+    public String getPesquisa() {
+        return pesquisa;
+    }
+
+    public void setPesquisa(String pesquisa) {
+        this.pesquisa = pesquisa;
+    }
     public void manterFuncionario(){
        try{
+           if(funcionario.isFuncionarioAtivo() == true)
+           {
+               funcionario.getUsuario().setAtivo(true);
+           }else{
+                funcionario.getUsuario().setAtivo(false);
+           }
+           userMB.incluiUserEdicao(funcionario);
            funcionario.setEndereco(endereco);
            ejb.incluiFuncionario(funcionario);
            adicionarMensagem(FacesMessage.SEVERITY_INFO, "Funcionario Mantido Com Sucesso");
@@ -66,8 +92,8 @@ public class FuncionarioMB {
            facesContext.addMessage(null,
            new FacesMessage(severidade, msg, null));
      }
-    public List<Funcionario> findByAllFuncionarios(){
-        return ejb.findAllFuncionario();
+    public List<Funcionario> findByAllFuncionarios() throws Exception{
+        return ejb.findAllFuncionario(tipoPesquisa, pesquisa);
     }
     public void adicionaEnderecoPraEdicao(){
         this.endereco = funcionario.getEndereco();

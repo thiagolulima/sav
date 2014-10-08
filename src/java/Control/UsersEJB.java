@@ -1,6 +1,7 @@
 
 package Control;
 
+import Model.Funcionario;
 import Model.Pessoa;
 import Model.Users;
 import java.util.ArrayList;
@@ -39,6 +40,16 @@ public class UsersEJB {
                  .setParameter("nome",nomeDeUsuario)
                  .getSingleResult(); 
          return  (Pessoa) em.createQuery( "SELECT t FROM Pessoa t Where t.usuario.id =:id" )
+                 .setParameter("id",user.getId())
+                 .getSingleResult();
+           
+       }
+         public Funcionario retornaFuncionarioParaSessao(String nomeDeUsuario){
+             Users user = new Users();
+         user = (Users)em.createQuery("Select u From Users u Where u.username =:nome " )
+                 .setParameter("nome",nomeDeUsuario)
+                 .getSingleResult(); 
+         return  (Funcionario) em.createQuery( "SELECT t FROM Funcionario t Where t.usuario.id =:id" )
                  .setParameter("id",user.getId())
                  .getSingleResult();
            

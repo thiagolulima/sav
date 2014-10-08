@@ -27,8 +27,8 @@
                         <p:inputText value="#{ usersMB.pessoa.usuario.username}"  size="30" label="usuario" disabled="true"  styleClass="prodCss"/>
                           <p:outputLabel value="Perfil do Usuario:"  styleClass="prodCss" />
                           <h:selectOneMenu value="#{ usersMB.pessoa.usuario.authority}"  styleClass="prodCss"  >
-                             <f:selectItem   itemValue="ROLE_VENDEDOR" itemLabel="Vendedor"/>
                              <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Gerente"/>
+                             <f:selectItem   itemValue="ROLE_VENDEDOR" itemLabel="Vendedor"/>
                              <f:selectItem   itemValue="ROLE_CLIENTE"   itemLabel="Cliente"/>
                           </h:selectOneMenu>
                           <p:outputLabel value="Senha:"  styleClass="prodCss"/>
@@ -101,16 +101,22 @@
                         <p:inputText value="#{ usersMB.pessoa.usuario.username}"  size="30" label="usuario" disabled="true"  styleClass="prodCss"/>
                           <p:outputLabel value="Perfil do Usuario:"  styleClass="prodCss" />
                           <h:selectOneMenu value="#{ usersMB.pessoa.usuario.authority}"  styleClass="prodCss">
-                             <f:selectItem   itemValue="ROLE_ADMIN" itemLabel="Gerente"/>
-                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Vendedor"/>
+                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Gerente"/>
+                             <f:selectItem   itemValue="ROLE_VENDEDOR" itemLabel="Vendedor"/>
                              <f:selectItem   itemValue="ROLE_CLIENTE"   itemLabel="Cliente"/>
                           </h:selectOneMenu>
+                          <p:outputLabel value="Ativo:"  styleClass="prodCss" />
+                          <h:selectOneMenu value="#{ usersMB.pessoa.usuario.ativo}"  styleClass="prodCss">
+                             <f:selectItem   itemValue="true" itemLabel="Ativo"/>
+                             <f:selectItem   itemValue="false" itemLabel="Inativo"/>
+                          </h:selectOneMenu>
                           <p:outputLabel value="Senha:"  styleClass="prodCss"/>
-                          <p:password value="#{ usersMB.pessoa.usuario.password}"  size="30" label="Descricao"  styleClass="prodCss" />
-                          <p:outputLabel value="Confirma:"  styleClass="prodCss"/>
+                         
+                          <p:password value="#{ usersMB.senha}"  size="30" label="Senha"  styleClass="prodCss" />
+                          <p:outputLabel value="Confirma:"   styleClass="prodCss"/>
                           <p:password value="#{ usersMB.confirmaSenha}"  size="30" label="Descricao"  styleClass="prodCss" />
                           
-                          <p:commandButton action="#{ usersMB.incluiUsuario()}" update=":form"  oncomplete="usersDialogo.hide()" value="incluir" style="margin-top: 15px;"/>             
+                          <p:commandButton action="#{ usersMB.edicaoUser()}" update=":form"  oncomplete="usersDialogo.hide()" value="incluir" style="margin-top: 15px;"/>             
                           <p:commandButton  update=":form"  oncomplete="usersDialogo.hide()"  action="#{usersMB.reseta()}" value="Sair"  style="margin-top: 15px; margin-left: 150px;"/>             
                       </h:panelGrid>
                     </p:outputPanel>
