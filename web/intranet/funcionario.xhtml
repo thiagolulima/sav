@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/intra.xhtml">
+
+            <ui:define name="conteudo">
+                <div id="clientes">
+                    <h2 style="text-align: center;">Cadastro de Funcionarios</h2>
+                <h:form>
+                 <h:panelGrid columns="4" style=" margin-top: 15px; margin-bottom: 15px;">
+                  <p:outputLabel value="Filtro"/>
+                  <p:selectOneMenu value="#{clienteMB.tipoPesquisa}" id="sel"  style="margin-left: 5px;" >
+                    <f:selectItem itemLabel="Selecione" itemValue="0"/>
+                    <f:selectItem itemLabel="Codigo" itemValue="1"/>
+                    <f:selectItem itemLabel="Nome" itemValue="2"/>
+                    <f:selectItem itemLabel="CPF" itemValue="3"/>       
+                  </p:selectOneMenu>
+                  <p:inputText value="#{clienteMB.pesquisa}" style="margin-left: 5px;" >
+                  </p:inputText>
+                  <p:commandButton update=":form:tabela"  value="pesquisar" style="margin-left: 5px;" />
+                </h:panelGrid>
+                </h:form>
+                <h:form id="form" styleClass="table"> 
+                          
+                <p:commandButton value="Incluir"   oncomplete="cadastro.show()"
+                                 style=" margin-right: 30px; margin-top: 20px; margin-bottom: 20px; float: right;" />
+               
+                <p:dataTable id="tabela" value="#{ funcionarioMB.findByAllFuncionarios()}" var="funcionario" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
+                 <f:facet name="header">  
+                      <h2>Lista de Funcionarios </h2>
+                 </f:facet>  
+                 <p:column     headerText="Codigo " style="color:#003399;" width="20"  >
+                     <h:outputLabel value="#{funcionario.id}"/> 
+                 </p:column>
+                    <p:column      headerText="Nome" style="color:#003399;">
+                        <h:outputLabel value="#{funcionario.nome}"/> 
+                    </p:column>
+                 <p:column  width="15" headerText="CPF " filterMatchMode="contains" style="color:#003399;" >
+                     <h:outputLabel value="#{funcionario.cpf}"/> 
+                    </p:column>
+                 <p:column  headerText="Editar" style="color:#003399;" width="15">
+                     <p:commandLink update=":form:edicaoCliente" oncomplete="clienteDialogo.show()" title="Editar" action="#{ funcionarioMB.adicionaEnderecoPraEdicao()}">  
+                       <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                       <f:setPropertyActionListener value="#{funcionario}"   
+                                                    target="#{ funcionarioMB.funcionario}" />  
+                       </p:commandLink> 
+                    </p:column>
+                </p:dataTable>
+               <p:dialog   header="Edição de Funcionario"  widgetVar="clienteDialogo" modal="true"  showEffect="fade" hideEffect="explode">  
+               <p:outputPanel id="edicaoCliente"  layout="block" >        
+                  <h:panelGrid  columns="4" cellpadding="5"  style="color:#003399;"> 
+                      <h:outputLabel for="nome" value="Nome  " />  
+                      <p:inputText id="nome" value="#{ funcionarioMB.funcionario.nome}"  size="30" label="Nome" />  
+                      <h:outputLabel for="cadastroNacional" value="CPF: " />  
+                      <p:inputText id="cadastroNacional" value="#{ funcionarioMB.funcionario.cpf}" size="25" />
+                      <h:outputLabel for="rg" value="RG: " />  
+                      <p:inputText id="rg" value="#{ funcionarioMB.funcionario.rg}" size="25" />   
+                             <p:outputLabel value="Situação:"/>
+                      <h:selectOneMenu value="#{funcionarioMB.funcionario.funcionarioAtivo}"  styleClass="prodCss"  >
+                             <f:selectItem   itemValue="true" itemLabel="Ativo"/>
+                             <f:selectItem   itemValue="false" itemLabel="Inativo"/>
+                      </h:selectOneMenu>
+                      <p:outputLabel for="txt_email" value="Email:"/>
+                      <p:inputText value="#{ funcionarioMB.funcionario.email}" id="txt_email" size="30"/>
+                      <p:outputLabel  for="logradouro" value="Endereço:"/> 
+                      <p:inputText value="#{ funcionarioMB.endereco.logradouro}" id="logradouro" size="35"/>
+                      <p:outputLabel for="numero" value="Numero:"/> 
+                      <p:inputText value="#{funcionarioMB.endereco.numero}" id="numero" size="15"/> 
+                      <p:outputLabel for="bairro" value="Bairro:"/>
+                      <p:inputText value="#{ funcionarioMB.endereco.bairro}"  id="bairro" size="20"/>
+                      <p:outputLabel for="cidade" value="Cidade:"/> 
+                      <p:inputText value="#{funcionarioMB.endereco.cidade}"  id="cidade" size="20"/>
+                      <h:outputLabel value="Estado" />
+                      <h:selectOneMenu value="#{ funcionarioMB.endereco.estado}" converter="#{ converterMB}">
+                          <f:selectItems value="#{estadoMB.findByAllEstado()}"
+                               var="estado"
+                               itemValue="#{estado}"
+                               itemLabel="#{estado.sigla}"   />
+                     </h:selectOneMenu> 
+                     <p:outputLabel for="cep" value="Cep:"/> 
+                     <p:inputMask value="#{ funcionarioMB.endereco.cep}" mask="99.999.999"  id="cep" size="15"/>
+                     <p:outputLabel  value="Complemento:"/> 
+                     <p:inputText value="#{ funcionarioMB.endereco.complemento}" size="35"/> 
+                     
+                     <p:growl id="msgs"/>
+                 </h:panelGrid>
+                   <p>Lista de Telefones</p>
+                 
+                    <p:outputLabel value="Telefone:"/> 
+                    <p:inputMask value="#{ funcionarioMB.telefone.numeroTel}" id="txt_telefone" mask="(99)-9999-9999" size="14"/>
+                    <p:commandLink value="Adicionar"  action="#{funcionarioMB.adicionaTelefone()}" update="tbTel "    style=" margin-left: 10px;">
+                      
+                    </p:commandLink>
+                    <p:dataTable var="telefones"  value="#{funcionarioMB.funcionario.telefones}" id="tbTel" style=" margin-top: 15px;">
+                      <p:column       headerText="Telefone"  style="color:#003399;" width="20"  >
+                          <h:outputLabel value="#{telefones.numeroTel}"/> 
+                     </p:column>
+                      <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                          <p:commandButton update="tbTel" value="Excluir"  action="#{funcionarioMB.funcionario.telefones.remove(telefones)}" />
+                      </p:column>  
+                    </p:dataTable>
+                    <p:commandButton  action="#{funcionarioMB.manterFuncionario()}" value="Salvar alteração"  update="msgs form" style="margin-top: 10px;" />
+               </p:outputPanel>  
+           </p:dialog>
+         
+        </h:form>       
+         <p:dialog   header="Cadastro"  widgetVar="cadastro" modal="true" showEffect="fade" hideEffect="explode" > 
+          
+             <ui:include src="cliente/funcio.xhtml"/>
+             
+          </p:dialog>            
+                   
+              
+      </div>
+    </ui:define>
+  </ui:composition>
+ </body>
+</html>

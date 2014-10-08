@@ -27,8 +27,8 @@
                         <p:inputText value="#{ usersMB.pessoa.usuario.username}"  size="30" label="usuario" disabled="true"  styleClass="prodCss"/>
                           <p:outputLabel value="Perfil do Usuario:"  styleClass="prodCss" />
                           <h:selectOneMenu value="#{ usersMB.pessoa.usuario.authority}"  styleClass="prodCss"  >
-                             <f:selectItem   itemValue="ROLE_ADMIN" itemLabel="Gerente"/>
-                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Vendedor"/>
+                             <f:selectItem   itemValue="ROLE_VENDEDOR" itemLabel="Vendedor"/>
+                             <f:selectItem   itemValue="ROLE_MASTER" itemLabel="Gerente"/>
                              <f:selectItem   itemValue="ROLE_CLIENTE"   itemLabel="Cliente"/>
                           </h:selectOneMenu>
                           <p:outputLabel value="Senha:"  styleClass="prodCss"/>

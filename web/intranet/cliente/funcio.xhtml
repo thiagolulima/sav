@@ -1,0 +1,72 @@
+
+  <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+           <h2>Funcionario</h2>
+           <h:form id="formc">
+                 
+                  <p:growl id="msgs"/>
+                  <p:panelGrid columns="4" style="background-color:  #f4f4f4;">
+                      <p:outputLabel value="Nome*:"/> 
+                      <p:inputText value="#{ funcionarioMB.funcionario.nome}" required="true" id="nome" label="Nome" size="30"/>
+                      <p:outputLabel  value="CPF*:"/> 
+                      <p:inputMask value="#{funcionarioMB.funcionario.cpf}" mask="999.999.999-99" required="true"  id="cpf" label="CPF"/>
+                      <p:outputLabel  value="RG:"/> 
+                      <p:inputText value="#{funcionarioMB.funcionario.rg}"  id="rg" label="RG" size="25"/>  
+                      <p:outputLabel value="Situação:"/>
+                      <h:selectOneMenu value="#{funcionarioMB.funcionario.funcionarioAtivo}"  styleClass="prodCss"  >
+                             <f:selectItem   itemValue="true" itemLabel="Ativo"/>
+                             <f:selectItem   itemValue="false" itemLabel="Inativo"/>
+                      </h:selectOneMenu>
+                      <p:outputLabel value="Email*:"/>
+                      <p:inputText value="#{ funcionarioMB.funcionario.email}" required="true"  size="30" label="Email"/>
+                      <p:outputLabel value="Endereço*:"/> 
+                      <p:inputText value="#{ funcionarioMB.endereco.logradouro}" required="true" id="logradouro" label="Endereco"  size="35"/>
+                      <p:outputLabel value="Numero*:"/> 
+                      <p:inputText value="#{funcionarioMB.endereco.numero}" required="true" label="Numero" size="15"/> 
+                      <p:outputLabel value="Bairro*:"/>
+                      <p:inputText value="#{ funcionarioMB.endereco.bairro}" required="true" id="bairro" label="Bairro" size="20"/>
+                      <p:outputLabel value="Cidade*:"/> 
+                      <p:inputText value="#{funcionarioMB.endereco.cidade}" required="true" id="cidade" label="Cidade" size="20"/>
+                      <p:outputLabel value="Estado:"/>
+                      <h:selectOneMenu value="#{ funcionarioMB.endereco.estado}"  converter="#{ converterMB}" >
+                          <f:selectItems value="#{  estadoMB.findByAllEstado() }"
+                               var="estado"
+                               itemValue="#{estado}"
+                               itemLabel="#{estado.sigla}"   />
+                      </h:selectOneMenu> 
+                      <p:outputLabel value="Cep*:"/> 
+                      <p:inputMask value="#{ funcionarioMB.endereco.cep}" mask="99.999.999" required="true" id="cep" label="CEP" size="15"/>
+                      <p:outputLabel value="Complemento:"/> 
+                      <p:inputText value="#{ funcionarioMB.endereco.complemento}"  size="30"/> 
+                      
+              </p:panelGrid> 
+                  <p>Lista de Telefones</p>
+                 
+                    <p:outputLabel value="Telefone:"/> 
+                    <p:inputMask value="#{funcionarioMB.telefone.numeroTel}" id="txt_telefone" mask="(99)-9999-9999" size="14"/>
+                    <p:commandLink value="Adicionar"  action="#{funcionarioMB.adicionaTelefone()}" update=":formc "    style=" margin-left: 10px;">
+                      
+                    </p:commandLink>
+                    <p:dataTable var="telefones"  value="#{funcionarioMB.funcionario.telefones}" id="tbTel" style=" margin-top: 15px;">
+                      <p:column       headerText="Telefone"  style="color:#003399;" width="20"  >
+                          <h:outputLabel value="#{telefones.numeroTel}"/> 
+                     </p:column>
+                      <p:column  headerText="Excluir" style="color:#003399;" width="15">
+                          <p:commandButton update="tbTel" value="Excluir"  action="#{funcionarioMB.funcionario.telefones.remove(telefones)}" />
+                      </p:column>  
+                    </p:dataTable>
+                  
+                    
+                    <p:commandButton   action="#{funcionarioMB.manterFuncionario()}" 
+                                     value="Incluir"  update="msgs formc  "   style="margin-top: 10px;  margin-left: 10px;"/> 
+                  <p:outputLabel value="* Campos Obrigatórios" style="color: crimson ; margin-left:  180px;" />
+                 
+        </h:form> 
+         
+         
+       
+</ui:composition>

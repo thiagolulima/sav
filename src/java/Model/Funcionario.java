@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Model;
 
 import javax.persistence.Entity;
@@ -11,8 +8,19 @@ import javax.persistence.Entity;
 @Entity
 
 public class Funcionario extends Fisica {
-  
-  
+    
+    private boolean funcionarioAtivo;
+
+    public boolean isFuncionarioAtivo() {
+        return funcionarioAtivo;
+    }
+
+    public void setFuncionarioAtivo(boolean funcionarioAtivo) {
+        this.funcionarioAtivo = funcionarioAtivo;
+    }
+    
+
+   
     
     @Override
     public int hashCode() {

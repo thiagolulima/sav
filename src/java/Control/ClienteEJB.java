@@ -121,6 +121,10 @@ public class ClienteEJB {
      public boolean verificaSeACadastradoEmail(Pessoa pessoa) throws Exception{
              List<Pessoa> lista = em.createQuery("SELECT u FROM Pessoa u WHERE u.email=:email and u.id <> :id")
                      .setParameter("email", pessoa.getEmail().trim()).setParameter("id", pessoa.getId()).getResultList();
+             if(pessoa.getId()== null){
+                 lista = em.createQuery("SELECT u FROM Pessoa u WHERE u.email=:email ")
+                     .setParameter("email", pessoa.getEmail().trim()).getResultList();
+              }
              if(lista.size() > 0){
                     return true;
                }
