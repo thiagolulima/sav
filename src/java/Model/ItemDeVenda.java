@@ -19,9 +19,14 @@ public class ItemDeVenda implements Serializable {
     private Produto produto;
     @ManyToOne
     private Orcamento orcamento;
+    @ManyToOne
+    private Desconto desconto;
     private int quantidade;
     private double valorPago;
-             
+    
+    public ItemDeVenda (){
+        desconto = new Desconto();
+    }
     public Long getId() {
         return id;
     }
@@ -64,6 +69,20 @@ public class ItemDeVenda implements Serializable {
     public Double retornaValorTotalItem(){
         return quantidade * valorPago;
     }
+
+   
+    public double retornaValorTotalItemComDesconto(){
+        return (quantidade * valorPago) - desconto.getValorDesconto();
+    }
+
+    public Desconto getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Desconto desconto) {
+        this.desconto = desconto;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

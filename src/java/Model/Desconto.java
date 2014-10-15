@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Model;
 
 import java.io.Serializable;
@@ -15,20 +12,17 @@ import javax.persistence.Temporal;
 
 
 @Entity
-public class PedidoVenda implements Serializable {
+public class Desconto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    Orcamento orcamento;
+    private Funcionario funcionarioAutorizou;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dataPedido ;
-    @ManyToOne
-    private StatusPedido status ;
-    private boolean bloqueio = false;
- 
-    
+    private Date dataLiberacao ;
+    private double valorDesconto = 0 ;
+    private double valorDescontoAutorizado = 0;
     public Long getId() {
         return id;
     }
@@ -36,39 +30,40 @@ public class PedidoVenda implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Orcamento getOrcamento() {
-        return orcamento;
+    public Funcionario getFuncionarioAutorizou() {
+        return funcionarioAutorizou;
     }
 
-    public void setOrcamento(Orcamento orcamento) {
-        this.orcamento = orcamento;
+    public void setFuncionarioAutorizou(Funcionario funcionarioAutorizou) {
+        this.funcionarioAutorizou = funcionarioAutorizou;
     }
 
-    public Date getDataPedido() {
-        return dataPedido;
+    public Date getDataLiberacao() {
+        return dataLiberacao;
     }
 
-    public void setDataPedido(Date dataPedido) {
-        this.dataPedido = dataPedido;
+    public void setDataLiberacao(Date dataLiberacao) {
+        this.dataLiberacao = dataLiberacao;
     }
 
-    public StatusPedido getStatus() {
-        return status;
+    public double getValorDesconto() {
+       
+        return valorDesconto;
     }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
+    public void setValorDesconto(double valorDesconto) {
+       
+        this.valorDesconto = valorDesconto;
     }
 
-    public boolean isBloqueio() {
-        return bloqueio;
+    public double getValorDescontoAutorizado() {
+        return valorDescontoAutorizado;
     }
 
-    public void setBloqueio(boolean bloqueio) {
-        this.bloqueio = bloqueio;
+    public void setValorDescontoAutorizado(double valorDescontoAutorizado) {
+        this.valorDescontoAutorizado = valorDescontoAutorizado;
     }
-    
+ 
     @Override
     public int hashCode() {
         int hash = 0;
@@ -79,10 +74,10 @@ public class PedidoVenda implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PedidoVenda)) {
+        if (!(object instanceof Desconto)) {
             return false;
         }
-        PedidoVenda other = (PedidoVenda) object;
+        Desconto other = (Desconto) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -91,7 +86,7 @@ public class PedidoVenda implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.PedidoVenda[ id=" + id + " ]";
+        return "Model.Desconto[ id=" + id + " ]";
     }
     
 }

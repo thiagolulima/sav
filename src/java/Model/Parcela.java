@@ -19,6 +19,7 @@ public class Parcela implements Serializable {
     private Long id;
     private int    numeroParcela;
     private double porcentagemDoTotal;
+    private int prazo;
     public Long getId() {
         return id;
     }
@@ -42,7 +43,14 @@ public class Parcela implements Serializable {
     public void setPorcentagemDoTotal(double porcentagemDoTotal) {
         this.porcentagemDoTotal = porcentagemDoTotal;
     }
-     
+
+    public int getPrazo() {
+        return prazo;
+    }
+
+    public void setPrazo(int prazo) {
+        this.prazo = prazo;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

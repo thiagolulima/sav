@@ -19,9 +19,6 @@ public class Funcionario extends Fisica {
         this.funcionarioAtivo = funcionarioAtivo;
     }
     
-
-   
-    
     @Override
     public int hashCode() {
         int hash = 0;

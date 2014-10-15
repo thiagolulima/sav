@@ -12,7 +12,9 @@ import Model.Produto;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 
@@ -30,6 +32,8 @@ public class PedidoMB {
     PedidoEJB pedidoEJB;
     @Inject
     OrcamentoMB orcamentoMB ;
+    @Inject
+    usuarioMB funcionario;
     public PedidoMB() {
     }
 
@@ -85,10 +89,27 @@ public class PedidoMB {
     public void gravaOrcamento(){
       orcamento =  orcamentoMB.incluiOrcamento(orcamento);
     }
+    public void salvaPedido(){
+        try {
+               pedido.setOrcamento(orcamento);
+               pedido.setDataPedido(data);
+               funcionario.verificaFuncionarioAtivo();
+               pedido.getOrcamento().setFuncionario(funcionario.getFuncionario());
+               pedidoEJB.incluiPedido(pedido);
+            
+            }catch (Exception ex)
+            {
+             adicionarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage()); 
+            }
+    }
     public List<PedidoVenda> findByAllPedidos(){
         return pedidoEJB.findByAllPedidos();
     }
-    
+    private void adicionarMensagem(FacesMessage.Severity severidade, String msg){
+           FacesContext facesContext = FacesContext.getCurrentInstance();
+           facesContext.addMessage(null,
+           new FacesMessage(severidade, msg, null));
+     }
     
     
     

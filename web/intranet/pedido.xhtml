@@ -21,6 +21,7 @@
                             <p:outputLabel value="Cliente:"  styleClass="prodCss"/>
                             <p:inputText value="#{pedidoMB.orcamento.pessoa.nome}" required="true" disabled="true" label="cliente" styleClass="prodCss" size="35"/>
                             <p:commandLink oncomplete="dialogo.show()" value="+" title="Adicionar Cliente  " style="margin-left: 15px; font-size: 24px;"/>
+                            <p:outputLabel value="#{pedidoMB.pedido.bloqueio}"  styleClass="prodCss"/>
                         </h:panelGrid>
                          <h:panelGrid columns="2" id="listaProd">   
                                 <p:dataTable var="produto" value="#{ pedidoMB.orcamento.produtos}" rows="5" paginator="true" style="margin-top: 15px; ">
@@ -28,13 +29,13 @@
                                          Lista de Produtos
                                          <p:commandButton  oncomplete="listaDialogo.show()"  style="margin-bottom: 5px;" value="Adicionar"/>
                                     </f:facet>
-                                 <p:column  filterBy="#{produto.produto.codProduto}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                 <p:column     headerText="Código"  style="color:#003399;" width="10"  >
                                         <h:outputLabel value="#{produto.produto.codProduto}"/> 
                                  </p:column>
-                                <p:column  filterBy="#{produto.produto.descricao}"     headerText="Descrição" filterMatchMode="contains" style="color:#003399;"   >
+                                <p:column      headerText="Descrição"  style="color:#003399;"   >
                                      <h:outputLabel value="#{produto.produto.descricao}"/> 
                                  </p:column>
-                                 <p:column  filterBy="#{produto.produto.numeroSerie}"     headerText="Numero de Série" filterMatchMode="contains" style="color:#003399;"   >
+                                 <p:column      headerText="Numero de Série"  style="color:#003399;"   >
                                   <h:outputLabel value="#{produto.produto.numeroSerie}"/> 
                                  </p:column>
                                  <p:column    headerText="Quantidade"  style="color:#003399;"   >
@@ -43,11 +44,16 @@
                                  <p:column    headerText="Valor"  style="color:#003399;"   >
                                      <h:outputLabel value="#{produto.valorPago}"/> 
                                  </p:column>
-                                 <p:column    headerText="Total"  style="color:#003399;"   >
-                                     <h:outputLabel value="#{produto.retornaValorTotalItem()}"/> 
+                                 <p:column    headerText="Desconto"  style="color:#003399;"   >
+                                     <p:inputText value="#{produto.desconto.valorDesconto}" size="6"> 
+                                         <p:ajax event="blur"  update=":form2" />
+                                     </p:inputText>
                                  </p:column>
-                                  <p:column  headerText="Remover" style="color:#003399;" width="10">
-                                  <p:commandLink update=":form2:listaProd"  action="#{ pedidoMB.orcamento.produtos.remove(produto)}" title="Remover" >  
+                                 <p:column    headerText="Total"  style="color:#003399;"   >
+                                     <h:outputLabel value="#{produto.retornaValorTotalItemComDesconto()}"/> 
+                                 </p:column>
+                                <p:column  headerText="Remover" style="color:#003399;" width="10">
+                                  <p:commandLink update=":form2:listaProd :form2:status"  action="#{ pedidoMB.orcamento.produtos.remove(produto)}" title="Remover" >  
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
                                   </p:commandLink> 
                                </p:column>
@@ -57,7 +63,7 @@
                              </f:facet>
                             </p:dataTable>
                             </h:panelGrid>  
-                           <h:panelGrid columns="2">
+                    <h:panelGrid columns="2"   id="status">
                             <h:outputLabel value="Status:"  styleClass="prodCss" />
                             <h:selectOneMenu value="#{ pedidoMB.pedido.status}" converter="#{ converterStatusMB}"  styleClass="prodCss">
                                 <f:selectItems value="#{ statusPedidoMB.findByAllStatus()}"
@@ -65,9 +71,7 @@
                                   itemValue="#{status}"
                                   itemLabel="#{status.descricao}"   />
                              </h:selectOneMenu> 
-                            <p:outputLabel value="Valor:"  styleClass="prodCss"/>
-                            <p:inputText value="#{produtoMB.produto.valor}" required="true" label="Valor"  styleClass="prodCss"/>
-                            <p:commandButton action="#{ produtoMB.incluiProduto()}" update="msgs :form" value="Incluir" style="margin-top: 15px;"/>
+                            <p:commandButton  update="msgs :form" value="Confirmar" style="margin-top: 15px;"/>
                         </h:panelGrid>   
                     
                   <p:growl id="msgs"/>
@@ -80,7 +84,6 @@
                 
                 <h:form>
                     <p:dialog   header="Lista"  widgetVar="fisicaDialogo" modal="true"  showEffect="fade" hideEffect="explode">
-                        
                             <h:panelGrid columns="4" style=" margin-top: 15px; margin-bottom: 15px;">
                                 <p:outputLabel value="Filtro"/>
                                  <p:selectOneMenu value="#{ clienteMB.tipoPesquisa}" id="sel"  style="margin-left: 5px;" >
@@ -188,7 +191,7 @@
                            <h:outputLabel value="#{produto.valor}"/> 
                        </p:column>
                        <p:column  headerText="Selecionar" style="color:#003399;" width="10">
-                           <p:commandLink update=":form2:listaProd" oncomplete="listaDialogo.hide()" title="Selecionar" action="#{ pedidoMB.selecionaProduto(produto)}" >  
+                           <p:commandLink update=":form2:listaProd  :form2" oncomplete="listaDialogo.hide()" title="Selecionar" action="#{ pedidoMB.selecionaProduto(produto)}" >  
                            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />    
                           </p:commandLink> 
                       </p:column>

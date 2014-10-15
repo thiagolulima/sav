@@ -85,7 +85,7 @@ public class usuarioMB  {
                   
                   
              }catch (Exception ex) {
-                 pessoa = new Pessoa();
+               funcionario = new Funcionario();
                FacesContext.getCurrentInstance().getExternalContext().redirect("./login.xhtml");
              } 
     }

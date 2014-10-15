@@ -28,9 +28,12 @@ public class Orcamento implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     List<ItemDeVenda> produtos = new ArrayList<ItemDeVenda>() ;
     @ManyToOne
-    Pessoa pessoa;
+    private Pessoa pessoa;
     @ManyToOne
-    TipoPagamento tipoPagamento ;
+    private TipoPagamento tipoPagamento ;
+    @ManyToOne
+    private Funcionario funcionario;
+   
    
     public Long getId() {
         return id;
@@ -79,14 +82,24 @@ public class Orcamento implements Serializable {
         this.tipoPagamento = tipoPagamento;
         
     }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+    
     public Double retornaTotalCompra(){
         Double total = 0.0 ;
         for (ItemDeVenda item :produtos )
         {
-           total = total + item.retornaValorTotalItem();
+           total = total + item.retornaValorTotalItemComDesconto();
         }
-        return total;
+        return total ;
     }
+ 
  
   
     @Override
