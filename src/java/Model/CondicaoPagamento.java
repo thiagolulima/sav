@@ -48,7 +48,14 @@ public class CondicaoPagamento implements Serializable {
     public void setParcelas(List<Parcela> parcelas) {
         this.parcelas = parcelas;
     }
-   
+    public int retornaQuantidadeParcelas(){
+         int quantidade = 0;
+         for(Parcela parcela : parcelas)
+         {
+             quantidade++;
+         }
+         return quantidade;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

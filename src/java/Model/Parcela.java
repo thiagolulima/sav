@@ -18,16 +18,13 @@ public class Parcela implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int    numeroParcela;
-    private double porcentagemDoTotal;
     private int prazo;
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public int getNumeroParcela() {
         return numeroParcela;
     }
@@ -35,15 +32,6 @@ public class Parcela implements Serializable {
     public void setNumeroParcela(int numeroParcela) {
         this.numeroParcela = numeroParcela;
     }
-
-    public double getPorcentagemDoTotal() {
-        return porcentagemDoTotal;
-    }
-
-    public void setPorcentagemDoTotal(double porcentagemDoTotal) {
-        this.porcentagemDoTotal = porcentagemDoTotal;
-    }
-
     public int getPrazo() {
         return prazo;
     }

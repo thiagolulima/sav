@@ -30,7 +30,7 @@ public class Orcamento implements Serializable {
     @ManyToOne
     private Pessoa pessoa;
     @ManyToOne
-    private TipoPagamento tipoPagamento ;
+    private CondicaoPagamento condicaoPagamento ;
     @ManyToOne
     private Funcionario funcionario;
    
@@ -74,15 +74,13 @@ public class Orcamento implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public TipoPagamento getTipoPagamento() {
-        return tipoPagamento;
+    public CondicaoPagamento getCondicaoPagamento() {
+        return condicaoPagamento;
     }
 
-    public void setTipoPagamento(TipoPagamento tipoPagamento) {
-        this.tipoPagamento = tipoPagamento;
-        
+    public void setCondicaoPagamento(CondicaoPagamento condicaoPagamento) {
+        this.condicaoPagamento = condicaoPagamento;
     }
-
     public Funcionario getFuncionario() {
         return funcionario;
     }
@@ -99,6 +97,10 @@ public class Orcamento implements Serializable {
         }
         return total ;
     }
+    public double retornaValorParcela(){
+        return retornaTotalCompra()/condicaoPagamento.retornaQuantidadeParcelas();
+    }
+            
  
  
   
