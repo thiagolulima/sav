@@ -100,10 +100,6 @@ public class Orcamento implements Serializable {
     public double retornaValorParcela(){
         return retornaTotalCompra()/condicaoPagamento.retornaQuantidadeParcelas();
     }
-            
- 
- 
-  
     @Override
     public int hashCode() {
         int hash = 0;

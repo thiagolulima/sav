@@ -56,6 +56,16 @@ public class CondicaoPagamento implements Serializable {
          }
          return quantidade;
     }
+    public int preencheNumeroParcelas(){
+        if(retornaQuantidadeParcelas() < 1)
+        {
+            return 1;
+        }
+        else
+        {
+           return retornaQuantidadeParcelas() + 1;
+        }
+    }
     @Override
     public int hashCode() {
         int hash = 0;
