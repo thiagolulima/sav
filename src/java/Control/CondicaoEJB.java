@@ -26,5 +26,10 @@ public class CondicaoEJB {
         return ( CondicaoPagamento )em.createQuery( "SELECT t FROM CondicaoPagamento t WHERE t.id = :id" )
                  .setParameter( "id" , id ).getSingleResult();
     }
+     public void removeCondicao(CondicaoPagamento condicao){
+          condicao = em.merge(condicao);
+          em.remove(condicao);
+         
+     }
 
 }
