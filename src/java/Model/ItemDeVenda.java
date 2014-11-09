@@ -2,6 +2,8 @@
 package Model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,8 @@ public class ItemDeVenda implements Serializable {
     
     public ItemDeVenda (){
         desconto = new Desconto();
+        atualizaDescontoValorPorcentagem();
+        atualizaDescontoValor();
     }
     public Long getId() {
         return id;
@@ -74,7 +78,7 @@ public class ItemDeVenda implements Serializable {
     public double retornaValorTotalItemComDesconto(){
         return (quantidade * valorPago) - desconto.getValorDesconto();
     }
-
+   
     public Desconto getDesconto() {
         return desconto;
     }
@@ -82,7 +86,40 @@ public class ItemDeVenda implements Serializable {
     public void setDesconto(Desconto desconto) {
         this.desconto = desconto;
     }
-    
+    public final void atualizaDescontoValorPorcentagem(){
+        if(valorPago > 0){
+         double valorComDesconto = valorPago - desconto.getValorDesconto() ;
+         double porcentagem = (valorComDesconto / valorPago) * 100;
+         double porcentagemReal = 100 - porcentagem;
+         String formatString = String.format("%.2f", porcentagemReal)  ;
+         System.out.println(formatString);
+         String replace = formatString.replace("," , "."); 
+         desconto.setPorcentagemDesconto(Double.parseDouble(replace));
+        }
+    }
+    public final void atualizaDescontoValor(){
+        if(valorPago > 0){
+           double valorDesconto =  desconto.getPorcentagemDesconto()/100  * valorPago ;
+           String formatString = String.format("%.2f", valorDesconto)  ;
+           String replace = formatString.replace("," , "."); 
+           desconto.setValorDesconto(Double.parseDouble(replace));
+        }
+    }
+    public void autorizaOrcamento(Funcionario funcionario){
+        Date dataLiberacao = new Date();
+        desconto.setDataLiberacao(dataLiberacao);
+        desconto.setFuncionarioAutorizou(funcionario);
+        desconto.setValorDescontoAutorizado(desconto.getValorDesconto());
+    }
+    public boolean verificaItemSemDesconto(){
+        if(desconto.getValorDescontoAutorizado() < desconto.getValorDesconto())
+          {
+            return false;
+          }
+        else{
+            return true;
+        }
+    }
     @Override
     public int hashCode() {
         int hash = 0;

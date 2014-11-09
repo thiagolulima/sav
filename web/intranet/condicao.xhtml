@@ -9,7 +9,6 @@
     <body>
 
         <ui:composition template="./../template/intra.xhtml">
-
             <ui:define name="conteudo">
               <h2 style="text-align: center;">Cadastro de Condição de Pagamento</h2>
               <h:form id="form2">
@@ -25,11 +24,12 @@
                               <p:commandButton   oncomplete="parcela.show()"  update=":form2:parcela"  value="Incluir" style="font-size: 13px;"/>
                               <p:commandButton  update=":form2:incluiCategoria "  actionListener="#{condicaoMB.removeParcela()}" value="Remover" style="margin-top: 15px; margin-left: 15px;"/> 
                           </f:facet>
+                        
                           <p:column    headerText="Numero Parcela" style="color:#003399;" width="10"  >
                               <h:outputLabel value="#{parcela.numeroParcela}"/> 
                           </p:column>
                           <p:column  headerText="Prazo"  style="color:#003399;"   >
-                              <h:outputLabel value="#{parcela.prazo}"/> 
+                              <h:inputText value="#{parcela.prazo}" size="13"/> 
                           </p:column>
                           <f:facet name="footer">
                                   Lista de Parcelas
@@ -41,12 +41,10 @@
                   <p:dialog   header="Inclui Parcela"  widgetVar="parcela" modal="true"  showEffect="fade" hideEffect="explode">
                       <p:outputPanel id="parcela" layout="block">  
                       <p:panelGrid columns="2">
-                       <p:outputLabel value="Numero Parcela"/>
-                       <p:outputLabel value="#{condicaoMB.condicao.preencheNumeroParcelas()}"/>
-                       <p:outputLabel value="Prazo"/>
-                       <p:inputText value="#{condicaoMB.parcela.prazo}"/>
+                        <p:outputLabel value="Quantidade de Parcelas"/>
+                        <p:inputText value="#{condicaoMB.quantidadeParcelas}" required="true"/>
                       </p:panelGrid>
-                      <p:commandButton  oncomplete="parcela.hide()" update=":form2:incluiCategoria :form:condicao" action="#{condicaoMB.adicionaParcela()}" value="incluir" style="margin-top: 15px;"/> 
+                      <p:commandButton  oncomplete="parcela.hide()" update=":form2:incluiCategoria :form2:parcela :form:condicao" action="#{condicaoMB.adicionaParcela()}" value="incluir" style="margin-top: 15px;"/> 
                       </p:outputPanel>
                   </p:dialog>
                    <p:growl  id="msgs"/>
@@ -84,42 +82,43 @@
                      </p:outputPanel>
                    </p:dialog>
                     <p:dialog   header="Editar"  widgetVar="editaCondicao" modal="true"  showEffect="fade" hideEffect="explode" closable="false">
-                       <p:outputPanel id="condicao">
+                       <p:outputPanel id="condicao"  >
                          <h:panelGrid columns="2" id="grid">
                           <p:outputLabel value="Descrição:"/>
                           <p:inputText value="#{ condicaoMB.condicao.descricao}"  size="30" label="Descricao"/>
                          </h:panelGrid>
-                          <p:dataTable var="parcela" id="par" value="#{condicaoMB.condicao.parcelas}" style="margin-top: 15px;">
+                           <p:dataTable var="parcela" id="par" value="#{condicaoMB.retornaListaParcelas()}" style="margin-top: 15px;">
                             <f:facet name="header">
-                              <p:commandButton   oncomplete="parcelaEdicao.show()"  update=":form:parcelaEdi"  value="Incluir" style="font-size: 13px;"/>
-                              <p:commandButton  update=":form:condicao "  actionListener="#{condicaoMB.removeParcela()}" value="Remover" style="margin-top: 15px; margin-left: 15px;"/> 
+                              <p:commandButton   oncomplete="parcelaEdicao.show()"  update=":form:condicao :form2"  value="Incluir" style="font-size: 13px;"/>
+                              <p:commandButton  update=":form:condicao :form2"  actionListener="#{condicaoMB.removeParcela()}" value="Remover" style="margin-top: 15px; margin-left: 15px;"/> 
                             </f:facet>
                             <p:column    headerText="Numero Parcela" style="color:#003399;" width="10"  >
                               <h:outputLabel value="#{parcela.numeroParcela}"/> 
                             </p:column>
                             <p:column  headerText="Prazo"  style="color:#003399;"   >
-                              <h:outputLabel value="#{parcela.prazo}"/> 
+                                <h:inputText  required="true" value="#{parcela.prazo}" size="10"/> 
                            </p:column>
                               <f:facet name="footer">
                                   Lista de Parcelas
                               </f:facet>
                          </p:dataTable>
                          <p:commandButton  update=":form2 :form " action="#{condicaoMB.incluiCondicao()}" value="Salvar" style="margin-top: 15px;"/> 
-                         <p:commandButton  update=":form2 :form " action="#{condicaoMB.resetaCondicao()}" value="Sair" style=" margin-left: 120px; margin-top: 15px;"/> 
+                         <p:commandButton  update=":form2 :form"  oncomplete="editaCondicao.hide()" action="#{condicaoMB.resetaCondicao()}" value="Sair" style=" margin-left: 120px; margin-top: 15px;"/> 
+                   
                        </p:outputPanel>
+                      
                    </p:dialog>
-                    <p:dialog   header="Inclui Parcela"  widgetVar="parcelaEdicao" modal="true"  showEffect="fade" hideEffect="explode">
-                      <p:outputPanel id="parcelaEdi" layout="block">  
+                   <p:dialog   header="Inclui Parcela"  widgetVar="parcelaEdicao" modal="true"  showEffect="fade" hideEffect="explode">
+                     
                         <p:panelGrid columns="2">
-                         <p:outputLabel value="Numero Parcela"/>
-                         <p:outputLabel value="#{condicaoMB.condicao.preencheNumeroParcelas()}"/>
-                         <p:outputLabel value="Prazo"/>
-                         <p:inputText value="#{condicaoMB.parcela.prazo}"/>
+                          <p:outputLabel value="Quantidade de Parcelas"/>
+                           <p:inputText value="#{condicaoMB.quantidadeParcelas}" />
                         </p:panelGrid>
-                        <p:commandButton  oncomplete="parcelaEdicao.hide()" update=":form:condicao" action="#{condicaoMB.adicionaParcela()}" value="incluir" style="margin-top: 15px;"/> 
-                      </p:outputPanel>
+                        <p:commandButton  oncomplete="parcelaEdicao.hide()" update=":form:condicao  :form2" action="#{condicaoMB.adicionaParcela()}" value="incluir" style="margin-top: 15px;"/> 
+                      
                   </p:dialog>
                 </h:form>
+         
             </ui:define>
         </ui:composition>
     </body>

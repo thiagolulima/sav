@@ -23,10 +23,10 @@ public class PedidoVenda implements Serializable {
     @ManyToOne
     Orcamento orcamento;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dataPedido ;
+    private Date dataPedido  ;
     @ManyToOne
     private StatusPedido status ;
-    private boolean bloqueio = false;
+    
  
     
     public Long getId() {
@@ -60,15 +60,6 @@ public class PedidoVenda implements Serializable {
     public void setStatus(StatusPedido status) {
         this.status = status;
     }
-
-    public boolean isBloqueio() {
-        return bloqueio;
-    }
-
-    public void setBloqueio(boolean bloqueio) {
-        this.bloqueio = bloqueio;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;

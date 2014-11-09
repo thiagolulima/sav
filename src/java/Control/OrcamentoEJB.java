@@ -13,8 +13,14 @@ public class OrcamentoEJB {
        @PersistenceContext
         EntityManager em;
        public Orcamento incluiOrcamento(Orcamento orcamento)
-       {
-           return em.merge(orcamento);
+       { 
+           em.merge(orcamento);
+           return orcamento;
        }
+          public void removeOrcamento(Orcamento orcamento){
+               
+               orcamento = em.merge(orcamento);
+               em.remove(orcamento);
+        }
 
 }

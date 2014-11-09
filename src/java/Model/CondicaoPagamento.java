@@ -66,6 +66,7 @@ public class CondicaoPagamento implements Serializable {
            return retornaQuantidadeParcelas() + 1;
         }
     }
+    
     @Override
     public int hashCode() {
         int hash = 0;

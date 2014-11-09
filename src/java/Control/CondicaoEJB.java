@@ -5,6 +5,8 @@
 package Control;
 
 import Model.CondicaoPagamento;
+import Model.Parcela;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +19,8 @@ public class CondicaoEJB {
       @PersistenceContext 
       EntityManager em;
       public void incluiCondicao(CondicaoPagamento condicao){
-          em.merge(condicao);
+         Collections.sort(condicao.getParcelas());
+         em.merge(condicao);
      }
      public List<CondicaoPagamento> findByAllCondicao(){
          return em.createQuery("Select u From CondicaoPagamento u").getResultList();

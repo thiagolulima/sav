@@ -20,4 +20,7 @@ public class OrcamentoMB {
     {
         return orcamentoEJB.incluiOrcamento(orcamento);
     }
+    public void removeOrcamento(Orcamento orcamento){
+        orcamentoEJB.removeOrcamento(orcamento);
+    }
 }

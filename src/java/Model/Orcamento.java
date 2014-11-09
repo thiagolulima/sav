@@ -26,14 +26,15 @@ public class Orcamento implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataValidade ;
     @OneToMany(cascade = CascadeType.ALL)
-    List<ItemDeVenda> produtos = new ArrayList<ItemDeVenda>() ;
+    private List<ItemDeVenda> produtos = new ArrayList<ItemDeVenda>() ;
     @ManyToOne
     private Pessoa pessoa;
     @ManyToOne
     private CondicaoPagamento condicaoPagamento ;
     @ManyToOne
     private Funcionario funcionario;
-   
+    private double entrada;
+    private boolean bloqueio = false;
    
     public Long getId() {
         return id;
@@ -85,8 +86,23 @@ public class Orcamento implements Serializable {
         return funcionario;
     }
 
+    public double getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(double entrada) {
+        this.entrada = entrada;
+    }
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public boolean isBloqueio() {
+        return bloqueio;
+    }
+
+    public void setBloqueio(boolean bloqueio) {
+        this.bloqueio = bloqueio;
     }
     
     public Double retornaTotalCompra(){
@@ -99,6 +115,17 @@ public class Orcamento implements Serializable {
     }
     public double retornaValorParcela(){
         return retornaTotalCompra()/condicaoPagamento.retornaQuantidadeParcelas();
+    }
+    public boolean verificaPrazoZero(){
+      if(condicaoPagamento != null){
+        for(Parcela parcela : condicaoPagamento.getParcelas())
+        {
+            if(parcela.getPrazo() == 0 && condicaoPagamento.getParcelas().size() > 1){
+                return true;
+            }
+        }
+      }
+        return false;
     }
     @Override
     public int hashCode() {

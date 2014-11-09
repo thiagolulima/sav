@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -23,6 +24,8 @@ public class Desconto implements Serializable {
     private Date dataLiberacao ;
     private double valorDesconto = 0 ;
     private double valorDescontoAutorizado = 0;
+    @Transient
+    private double porcentagemDesconto ; 
     public Long getId() {
         return id;
     }
@@ -62,6 +65,14 @@ public class Desconto implements Serializable {
 
     public void setValorDescontoAutorizado(double valorDescontoAutorizado) {
         this.valorDescontoAutorizado = valorDescontoAutorizado;
+    }
+
+    public double getPorcentagemDesconto() {
+        return porcentagemDesconto;
+    }
+
+    public void setPorcentagemDesconto(double porcentagemDesconto) {
+        this.porcentagemDesconto = porcentagemDesconto;
     }
  
     @Override

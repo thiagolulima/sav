@@ -12,7 +12,7 @@ import javax.persistence.Id;
 
 
 @Entity
-public class Parcela implements Serializable {
+public class Parcela implements Serializable  , Comparable<Parcela> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +62,16 @@ public class Parcela implements Serializable {
     @Override
     public String toString() {
         return "Model.Parcela[ id=" + id + " ]";
+    }
+    @Override
+    public int compareTo(Parcela o) {
+        if(this.numeroParcela > o.numeroParcela){
+            return 1;
+        }
+        else if(this.numeroParcela < o.numeroParcela){
+            return - 1;
+        }
+        return 0;
     }
     
 }
