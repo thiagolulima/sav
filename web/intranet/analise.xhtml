@@ -28,7 +28,7 @@
                                 <p:dataTable var="produto" value="#{ pedidoMB.orcamento.produtos}" rows="5" paginator="true" style="margin-top: 15px; ">
                                     <f:facet name="header">
                                          Lista de Produtos
-                                         <p:commandButton    style="margin-bottom: 5px; margin-left: 30px;" value="Autoriza Todos"/>
+                                         <p:commandButton   action="#{pedidoMB.pedido.orcamento.autorizaTodosOrcamentos(usuarioMB.getFuncionario())}" update=":form2:listaProd :form2:status"  style="margin-bottom: 5px; margin-left: 30px;" value="Autoriza Todos"/>
                                     </f:facet>
                                  <p:column     headerText="Código"  style="color:#003399;" width="10"  >
                                         <h:outputLabel value="#{produto.produto.codProduto}"/> 
@@ -94,7 +94,7 @@
                  
                 </h:form>
                 <h:form id="form" style="margin-top: 25px; ">
-                       <p:dataTable var="pedido" value="#{ pedidoMB.findByAllPedidos()}" style="margin-top: 15px; max-width: 590px; ">
+                       <p:dataTable var="pedido" value="#{ pedidoMB.findByAllPedidosBloqueados()}" style="margin-top: 15px; max-width: 590px; ">
                        <f:facet name="header">
                            <h3>Lista de pedidos</h3>
                        </f:facet>
@@ -106,9 +106,6 @@
                           </p:column>
                            <p:column  filterBy="#{pedido.orcamento.pessoa.nome}"     headerText="Cliente" filterMatchMode="contains" style="color:#003399;"   >
                                <h:outputLabel value="#{pedido.orcamento.pessoa.nome}"/> 
-                          </p:column>
-                           <p:column     headerText="remover"  style="color:#003399;"   >
-                               <p:commandButton value="remov" action="#{pedidoMB.removePedido(pedido)}" update=":form :form2" />
                           </p:column>
                          <p:column  headerText="Editar" style="color:#003399;" width="10">
                              <p:commandLink update=":form :form2"  title="Editar" action="#{pedidoMB.setaOrcamento(pedido.getOrcamento())}" >  

@@ -13,24 +13,41 @@
             <ui:define name="conteudo">
                
                 <h:form id="form2">   
-                    
-                        <h:panelGrid columns="8" id="cadastro" >   
-                            <p:outputLabel value="Data:"  styleClass="prodCss"/>
-                            <h:outputText value="#{pedidoMB.retornaDataPedido()}"   styleClass="prodCss">
+                        <h:panelGrid columns="5">
+                         <p:outputLabel value="Data:"  styleClass="prodCss"/>
+                         <h:outputText value="#{orcamentoMB.retornaDataOrcamento()}"   styleClass="prodCss">
                                 <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" />  
-                            </h:outputText>
-                            <p:outputLabel value="Cliente:"  styleClass="prodCss"/>
-                            <p:inputText value="#{pedidoMB.orcamento.pessoa.nome}" required="true" disabled="true" label="cliente" styleClass="prodCss" size="35"/>
-                            <p:commandLink oncomplete="dialogo.show()" value="+" title="Adicionar Cliente" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" style="margin-left: 15px; font-size: 24px;"/>
-                            <p:outputLabel value="Bloqueado"  rendered="#{pedidoMB.pedido.orcamento.bloqueio == true}"  styleClass="prodCss" style="font-size: 15px; margin-left: 20px; color:  #C21200;"/>
-                            <p:outputLabel value="Liberado"  rendered="#{pedidoMB.pedido.orcamento.bloqueio == false}"  styleClass="prodCss" style="font-size: 15px; margin-left: 20px; color: #003399;"/>
-                            <p:outputLabel value="Codigo:" style=" margin-left: 10px;"/> <p:outputLabel value="#{pedidoMB.pedido.id}" style="margin-left: 5px; font-size: 15px; color:  #003366; font-weight: bold;"/>
+                         </h:outputText>
+                         <p:outputLabel value="Bloqueado"  rendered="#{orcamentoMB.orcamento.bloqueio == true}"  styleClass="prodCss" style="font-size: 15px; margin-left: 20px; color:  #C21200;"/>
+                            <p:outputLabel value="Liberado"  rendered="#{orcamentoMB.orcamento.bloqueio == false}"  styleClass="prodCss" style="font-size: 15px; margin-left: 20px; color: #003399;"/>
+                            <p:outputLabel value="Codigo:" style=" margin-left: 10px;"/> <p:outputLabel value="#{orcamentoMB.orcamento.id}" style="margin-left: 5px; font-size: 15px; color:  #003366; font-weight: bold;"/>
                         </h:panelGrid>
+                     <p:outputPanel id="preCadastro">
+                        <h:panelGrid columns="8" id="cadastro" >  
+                            <p:outputLabel value="Cliente:"  styleClass="prodCss"/>
+                            <p:inputText value="#{orcamentoMB.orcamento.pessoa.nome}" required="true" disabled="true" label="cliente" styleClass="prodCss" size="35"/>
+                            <p:outputLabel value="Sem Cadastro:"  styleClass="prodCss"/>
+                            <p:selectOneMenu value="#{orcamentoMB.habilitaCadastro}" style="margin-left: 10px;"   >
+                                <f:selectItem  itemValue="false" itemLabel="NÃO"/>
+                                <f:selectItem  itemValue="true" itemLabel="SIM"/>
+                                <p:ajax update=":form2:preCadastro"   />
+                            </p:selectOneMenu>
+                        </h:panelGrid> 
+                   
+                      <h:panelGrid   columns="4" rendered="#{orcamentoMB.habilitaCadastro == true and orcamentoMB.orcamento.pessoa == null}">
+                         <p:outputLabel value="Nome:"  styleClass="prodCss"/>
+                         <p:inputText value="#{orcamentoMB.preCadastro.nome}"  disabled="#{ orcamentoMB.orcamento.bloqueio}" required="true" label="cliente" styleClass="prodCss" size="20"/>
+                         <p:outputLabel value="Email:"  styleClass="prodCss"/>
+                         <p:inputText value="#{orcamentoMB.preCadastro.email}" disabled="#{ orcamentoMB.orcamento.bloqueio}" required="true"  label="email" styleClass="prodCss" size="20"/>
+                         <p:outputLabel value="Telefone:"  styleClass="prodCss"/>
+                         <p:inputMask value="#{orcamentoMB.preCadastro.telefone}" disabled="#{ orcamentoMB.orcamento.bloqueio}" required="true"   label="telefone" styleClass="prodCss" mask="(99)-(9999)-(9999)" />
+                      </h:panelGrid>
+                    </p:outputPanel>
                     <h:panelGrid  id="listaProd"  style=" max-width: 750px;">   
-                        <p:dataTable var="produto" value="#{ pedidoMB.items}" rows="5" paginator="true" style="margin-top: 15px; ">
+                        <p:dataTable var="produto" value="#{ orcamentoMB.items}" rows="5" paginator="true" style="margin-top: 15px; ">
                                     <f:facet name="header">
                                          Lista de Produtos
-                                         <p:commandButton  oncomplete="listaDialogo.show()" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}"  style="margin-bottom: 5px;" value="Adicionar"/>
+                                       <p:commandButton   action="#{orcamentoMB.orcamento.autorizaTodosOrcamentos(usuarioMB.getFuncionario())}" update=":form2:listaProd :form2:status"  style="margin-bottom: 5px; margin-left: 30px;" value="Autoriza Todos"/>
                                     </f:facet>
                                  <p:column     headerText="Código"  style="color:#003399;" width="10"  >
                                         <h:outputLabel value="#{produto.produto.codProduto}"/> 
@@ -48,59 +65,52 @@
                                      <h:outputLabel value="#{produto.valorPago}"/> 
                                  </p:column>
                                  <p:column    headerText="Desconto R$"  style="color:#003399;"   >
-                                     <p:inputText value="#{produto.desconto.valorDesconto}" size="6" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" > 
+                                     <p:inputText value="#{produto.desconto.valorDesconto}" size="6" disabled="#{ orcamentoMB.orcamento.bloqueio}" > 
                                          <p:ajax event="blur" listener="#{produto.atualizaDescontoValorPorcentagem()}"    update=":form2" />
                                      </p:inputText>
                                  </p:column>
                                  <p:column    headerText="Desconto % "  style="color:#003399;"   >
-                                     <p:inputText value="#{produto.desconto.porcentagemDesconto}" size="6" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" > 
+                                     <p:inputText value="#{produto.desconto.porcentagemDesconto}" size="6" disabled="#{orcamentoMB.orcamento.bloqueio}" > 
                                          <p:ajax event="blur" listener="#{produto.atualizaDescontoValor()}"  update=":form2" />
                                      </p:inputText>
                                  </p:column>
                                  <p:column    headerText="Total"  style="color:#003399;"   >
                                      <h:outputLabel value="#{produto.retornaValorTotalItemComDesconto()}"/> 
                                  </p:column>
-                                <p:column  headerText="Remover" style="color:#003399;" width="10">
-                                  <p:commandLink update=":form2:listaProd :form2:status"  action="#{ pedidoMB.items.remove(produto)}" title="Remover" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" >  
-                                    <h:outputText styleClass="ui-icon ui-icon-close" style="margin:0 auto;" />   
-                                  </p:commandLink> 
+                               <p:column  headerText="Autoriza" style="color:#003399;" width="10">
+                                    <p:commandButton update=":form2:listaProd :form2:status"  action="#{produto.autorizaOrcamento(usuarioMB.getFuncionario())}"  value="autoriza" disabled="#{produto.verificaItemSemDesconto()}"/>
                                </p:column>
                               <f:facet name="footer">
                                 Total:
-                                <h:outputText value="#{ pedidoMB.valorTotalCompra()}" /> 
+                                <h:outputText value="#{orcamentoMB.valorTotalCompra()}" /> 
                              </f:facet>
                             </p:dataTable>
-                            </h:panelGrid>  
-                           <h:panelGrid columns="4"   id="status">
-                            <h:outputLabel value="Status:"  styleClass="prodCss" />
-                            <p:selectOneMenu value="#{ pedidoMB.pedido.status}" converter="#{ converterStatusMB}"  styleClass="prodCss" disabled="#{pedidoMB.pedido.orcamento.bloqueio}">
-                                <f:selectItems value="#{ statusPedidoMB.findByAllStatus()}"
-                                  var="status"
-                                  itemValue="#{status}"
-                                  itemLabel="#{status.descricao}"   />
-                             </p:selectOneMenu> 
+                           </h:panelGrid>  
+                           <h:panelGrid columns="4"   id="status">               
+                            <h:outputLabel value="Data de Validade:"  styleClass="prodCss"  style="margin-left: 10px;" />
+                            <p:calendar value="#{orcamentoMB.orcamento.dataValidade}" disabled="#{ orcamentoMB.orcamento.bloqueio}"  style="margin-left: 10px;" size="10"/>
                             <h:outputLabel value="Condição de Pagamento:"  styleClass="prodCss"  style="margin-left: 60px;" />
-                            <p:selectOneMenu value="#{ pedidoMB.orcamento.condicaoPagamento}" converter="#{ converterCondicaoMB}"  styleClass="prodCss" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" >  
+                            <p:selectOneMenu value="#{ orcamentoMB.orcamento.condicaoPagamento}" converter="#{ converterCondicaoMB}"  styleClass="prodCss" disabled="#{ orcamentoMB.orcamento.bloqueio}" >  
                                 <f:selectItems value="#{ condicaoMB.findByAllCondicao()}"
                                   var="condicao"
                                   itemValue="#{condicao}"
                                   itemLabel="#{condicao.descricao}"   />
-                                <p:ajax  update="form2" />
+                                <p:ajax  update=":form2:entrada" />
                             </p:selectOneMenu> 
-                        </h:panelGrid>
-                        <h:panelGrid columns="2" rendered="#{pedidoMB.orcamento.verificaPrazoZero() == true}"  style="margin-top: 10px;">
+                        </h:panelGrid> 
+                       <p:outputPanel id="entrada">
+                        <h:panelGrid columns="2"  rendered="#{orcamentoMB.orcamento.verificaPrazoZero() == true}"  style="margin-top: 10px;">
                           <h:outputLabel value="Entrada:"  styleClass="prodCss" />
-                          <p:inputText value="#{pedidoMB.orcamento.entrada}" style="margin-left: 5px;" size="13"  disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" />
-                        </h:panelGrid>    
-                    <p:commandButton  update=":form2 :form" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" action="#{pedidoMB.salvaPedido()}" value="Confirmar" style="margin-top: 15px;"/>
-                    <p:commandButton  update=":form2 :form"  action="#{pedidoMB.novoPedido()}" value="Novo" style="margin-top: 15px; margin-left: 40px; "/>
+                          <p:inputText value="#{orcamentoMB.orcamento.entrada}" style="margin-left: 55px;" size="13"  disabled="#{ orcamentoMB.orcamento.bloqueio}" />
+                        </h:panelGrid>   
+                      </p:outputPanel>
+                    <p:commandButton  update=":form2 :form"  action="#{orcamentoMB.autorizaOrcamento()}"  value="Confirmar" style="margin-top: 15px;"/>
                   <p:growl id="msgs"/>
                  <p:dialog   header="Lista"  widgetVar="dialogo" modal="true"  showEffect="fade" hideEffect="explode">
                      <h2>Selecione tipo de cliente</h2>
                      <p:commandButton value="Juridica"     oncomplete="juridicaDialogo.show()" onclick="dialogo.hide()"  style="margin-left: 10px;"/>
                      <p:commandButton value="Física"      oncomplete="fisicaDialogo.show()" onclick="dialogo.hide()" style="margin-left: 35px;" />
                  </p:dialog>
-                  
                 </h:form>
                 <h:form>
                     <p:dialog   header="Lista"  widgetVar="fisicaDialogo" modal="true"  showEffect="fade" hideEffect="explode">
@@ -131,7 +141,7 @@
                            <p:commandLink update=":form2:cadastro" oncomplete="fisicaDialogo.hide()" title="Selecionar" >  
                                <h:outputText styleClass="ui-icon ui-icon-check" style="margin:0 auto;" />   
                                <f:setPropertyActionListener value="#{cliente}"   
-                                                            target="#{ pedidoMB.orcamento.pessoa}" />  
+                                                            target="#{ orcamentoMB.orcamento.pessoa}" />  
                            </p:commandLink> 
                           </p:column>
                        </p:dataTable>
@@ -169,7 +179,7 @@
                            <p:commandLink update=":form2:cadastro" oncomplete="juridicaDialogo.hide()" title="Selecionar" >  
                                <h:outputText styleClass="ui-icon ui-icon-check" style="margin:0 auto;" />   
                                <f:setPropertyActionListener value="#{cliente}"   
-                                                            target="#{ pedidoMB.orcamento.pessoa}" />  
+                                                            target="#{ orcamentoMB.orcamento.pessoa}" />  
                            </p:commandLink> 
                          </p:column>
                        </p:dataTable>
@@ -211,45 +221,51 @@
                            <h:outputLabel value="#{produto.valor}"/> 
                        </p:column>
                        <p:column  headerText="Selecionar" style="color:#003399;" width="10">
-                           <p:commandLink update=":form2:listaProd  :form2" oncomplete="listaDialogo.hide()" title="Selecionar" action="#{ pedidoMB.selecionaProduto(produto)}" >  
+                           <p:commandLink update=":form2:listaProd  " oncomplete="listaDialogo.hide()" title="Selecionar" action="#{ orcamentoMB.selecionaProduto(produto)}" >  
                            <h:outputText styleClass="ui-icon ui-icon-check" style="margin:0 auto;" />    
                           </p:commandLink> 
                       </p:column>
                       <f:facet name="footer">
                               Quantidade
-                              <h:inputText value="#{ pedidoMB.quantidade}" size="10"/> 
+                              <h:inputText value="#{ orcamentoMB.quantidade}" size="10"/> 
                       </f:facet>
                   </p:dataTable>
                 </p:dialog>
                 </h:form>
                 <h:form id="form" style="margin-top: 25px; ">
-                       <p:dataTable var="pedido" value="#{ pedidoMB.findByAllPedidos()}" style="margin-top: 15px; max-width: 590px; ">
+                    <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentosBloqueados()}" style="margin-top: 15px; max-width: 800px; ">
                        <f:facet name="header">
-                           <h3>Lista de pedidos</h3>
+                           <h3>Lista de orçamentos</h3>
                        </f:facet>
-                           <p:column  filterBy="#{pedido.id}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
-                               <h:outputLabel value="#{pedido.id}"/> 
+                           <p:column  filterBy="#{orcamento.id}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                               <h:outputLabel value="#{orcamento.id}"/> 
                            </p:column>
-                           <p:column  filterBy="#{pedido.orcamento.pessoa.id}"     headerText="Cod Cliente" filterMatchMode="contains" style="color:#003399;"   >
-                               <h:outputLabel value="#{pedido.orcamento.pessoa.id}"/> 
+                           <p:column headerText="Data de Validade" style="color:#003399;" >
+                            <h:outputLabel value="#{orcamento.dataValidade}"   styleClass="prodCss">
+                                <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" />  
+                            </h:outputLabel>
                           </p:column>
-                           <p:column  filterBy="#{pedido.orcamento.pessoa.nome}"     headerText="Cliente" filterMatchMode="contains" style="color:#003399;"   >
-                               <h:outputLabel value="#{pedido.orcamento.pessoa.nome}"/> 
+                           <p:column  filterBy="#{orcamento.pessoa.id}"     headerText="Cod Cliente" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{orcamento.pessoa.id}"/> 
+                          </p:column>
+                      
+                           <p:column  filterBy="#{orcamento.pessoa.nome}"     headerText="Cliente" filterMatchMode="contains" style="color:#003399;"   >
+                               <h:outputLabel value="#{orcamento.pessoa.nome}"/> 
+                          </p:column>
+                         <p:column  filterBy="#{orcamento.preCadastroCliente.nome}"     headerText="Cliente sem Cadastro" filterMatchMode="contains" style="color:#003399;"   >
+                            <h:outputLabel value="#{orcamento.preCadastroCliente.nome}"/> 
                           </p:column>
                          <p:column  headerText="Editar" style="color:#003399;" width="10">
-                             <p:commandLink update=":form :form2"  title="Editar" action="#{pedidoMB.setaOrcamento(pedido.getOrcamento())}" >  
+                             <p:commandLink update=":form :form2"  title="Editar" action="#{orcamentoMB.setaItensECadastroEdicao(orcamento)}"  >  
                            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
-                           <f:setPropertyActionListener value="#{pedido}"   
-                                                        target="#{ pedidoMB.pedido}" />  
+                           <f:setPropertyActionListener value="#{orcamento}"   
+                                                        target="#{ orcamentoMB.orcamento}" />  
                           </p:commandLink> 
                         </p:column>
-                        
+                    
                 </p:dataTable>
-                  
                 <p:growl id="msg"/>
-           
               </h:form>
-  
             </ui:define>
 
         </ui:composition>

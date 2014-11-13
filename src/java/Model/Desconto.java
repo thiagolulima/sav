@@ -24,7 +24,6 @@ public class Desconto implements Serializable {
     private Date dataLiberacao ;
     private double valorDesconto = 0 ;
     private double valorDescontoAutorizado = 0;
-    @Transient
     private double porcentagemDesconto ; 
     public Long getId() {
         return id;

@@ -129,7 +129,7 @@
                             <ul id="nav" class="menu"  style=" margin-left: 50px;" >
                                 
                                 <li>
-                                    <a href="./../">HOME</a>
+                                    <a href="./">HOME</a>
                                 </li>
                                 
                                 <li>
@@ -148,7 +148,7 @@
                                 </li>
                                 
                                 <li>
-                                    <a href="#">ORÇAMENTO</a>
+                                    <a href="orcamento.xhtml">ORÇAMENTO</a>
                                 </li>
                                 <li>
                                     <a href="pedido.xhtml">PEDIDO DE VENDA</a>
@@ -156,8 +156,13 @@
                                 <li>
                                     <a href="#">RELATÓRIOS</a>
                                 </li>
-                                <li>
-                                    <a href="#">CONFIGURAÇÃO</a>
+                                
+                                <li  >
+                                 <a href="#" >ANÁLISE</a>
+                                    <ul class="sub-menu">
+                                        <li><a  href="analise.xhtml">Pedido</a></li>
+                                        <li><a href="analiseorc.xhtml">Orcamento</a></li>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>
@@ -174,8 +179,18 @@
                 <div id="conteudo" style=" margin:  auto;">
                  
                     <ui:insert name="conteudo" />
-                 
-            
+                   <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                     <f:facet name="default">
+                     </f:facet>
+                     <f:facet name="start">
+                     </f:facet>
+                     <f:facet name="complete">
+                     </f:facet>
+                    </p:ajaxStatus>
+                    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <img src="#{facesContext.externalContext.requestContextPath}/resources/images/carregando.gif"/>
+                    </p:dialog>
                 </div>
                       
               

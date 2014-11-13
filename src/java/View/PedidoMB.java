@@ -141,15 +141,28 @@ public class PedidoMB {
             }
     }
     public void autorizaPedido() throws Exception{
-        pedidoEJB.zeraNaoAutorizados(items);
-        orcamento.setBloqueio(false);
-        pedidoEJB.incluiOrcamento(orcamento);
-        pedido = pedidoEJB.incluiPedido(pedido);
-        adicionarMensagem(FacesMessage.SEVERITY_INFO ,"Pedido Mantido com Sucesso!"); 
+        if(orcamento.getPessoa()== null)
+               {
+                   adicionarMensagem(FacesMessage.SEVERITY_ERROR,"Adicione o Cliente!"); 
+               }else
+               if(items.size()< 1){
+                    adicionarMensagem(FacesMessage.SEVERITY_ERROR,"Lista sem Produtos!"); 
+               }
+               else{
+                   pedidoEJB.zeraNaoAutorizados(items);
+                   orcamento.setBloqueio(false);
+                   pedidoEJB.incluiOrcamento(orcamento);
+                   pedido = pedidoEJB.incluiPedido(pedido);
+                   novoPedido();
+                   adicionarMensagem(FacesMessage.SEVERITY_INFO ,"Pedido Mantido com Sucesso!"); 
+               }
     }
     public List<PedidoVenda> findByAllPedidos() throws IOException{
         funcionario.verificaFuncionarioAtivo();
         return pedidoEJB.findByAllPedidos(funcionario.getFuncionario());
+    }
+    public List<PedidoVenda> findByAllPedidosBloqueados(){
+        return pedidoEJB.findByAllPedidosBloqueados();
     }
     public void removePedido(PedidoVenda pedido){
         orcamento = pedido.getOrcamento();
@@ -171,6 +184,10 @@ public class PedidoMB {
         quantidade = 1;
         item = new ItemDeVenda();
         items = new ArrayList<ItemDeVenda>();
+    }
+    public String valorTotalCompra(){
+        this.orcamento.setProdutos(items);
+        return orcamento.retornaTotalCompra();
     }
     
    

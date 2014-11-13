@@ -67,6 +67,16 @@ public class PedidoEJB {
             
                 return lista;
         }
+        public List<PedidoVenda> findByAllPedidosBloqueados(){
+            
+             List<PedidoVenda> lista = em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.bloqueio = 1")
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+        }
         public void removePedido(PedidoVenda pedido){
                
                pedido = em.merge(pedido);
@@ -82,6 +92,7 @@ public class PedidoEJB {
                if(item.getDesconto().getValorDescontoAutorizado() < item.getDesconto().getValorDesconto())
                {
                    item.getDesconto().setValorDesconto(item.getDesconto().getValorDescontoAutorizado());
+                   item.atualizaDescontoValorPorcentagem();
                }
                em.merge(item.getDesconto());
            }

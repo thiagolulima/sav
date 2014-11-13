@@ -33,6 +33,8 @@ public class Orcamento implements Serializable {
     private CondicaoPagamento condicaoPagamento ;
     @ManyToOne
     private Funcionario funcionario;
+    @ManyToOne
+    private PreCadastroCliente preCadastroCliente;
     private double entrada;
     private boolean bloqueio = false;
    
@@ -104,17 +106,26 @@ public class Orcamento implements Serializable {
     public void setBloqueio(boolean bloqueio) {
         this.bloqueio = bloqueio;
     }
+
+    public PreCadastroCliente getPreCadastroCliente() {
+        return preCadastroCliente;
+    }
+
+    public void setPreCadastroCliente(PreCadastroCliente preCadastroCliente) {
+        this.preCadastroCliente = preCadastroCliente;
+    }
     
-    public Double retornaTotalCompra(){
+    public String retornaTotalCompra(){
         Double total = 0.0 ;
         for (ItemDeVenda item :produtos )
         {
            total = total + item.retornaValorTotalItemComDesconto();
         }
-        return total ;
+        String formatString = String.format("%.2f", total)  ;
+        return formatString ;
     }
     public double retornaValorParcela(){
-        return retornaTotalCompra()/condicaoPagamento.retornaQuantidadeParcelas();
+        return Double.parseDouble(retornaTotalCompra())/condicaoPagamento.retornaQuantidadeParcelas();
     }
     public boolean verificaPrazoZero(){
       if(condicaoPagamento != null){
@@ -126,6 +137,14 @@ public class Orcamento implements Serializable {
         }
       }
         return false;
+    }
+    public void autorizaTodosOrcamentos(Funcionario funcionario){
+         Date dataLiberacao = new Date();
+        for(ItemDeVenda item : produtos){
+             item.getDesconto().setDataLiberacao(dataLiberacao);
+             item.getDesconto().setFuncionarioAutorizou(funcionario);
+             item.getDesconto().setValorDescontoAutorizado(item.getDesconto().getValorDesconto());
+        }
     }
     @Override
     public int hashCode() {
