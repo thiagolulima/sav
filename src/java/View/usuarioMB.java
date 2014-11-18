@@ -52,12 +52,12 @@ public class usuarioMB  {
              return nome;
          }
     }
-    public void setaFuncionarioNaSessao() throws IOException{
+    public void setaPessoaNaSessao() throws IOException{
         try  {
                     pessoa = 
                              ejb.retornaPessoaParaSessao(((SecurityContext) SecurityContextHolder.getContext()).
                              getAuthentication().getName()) ;
-                    verificaFuncionarioAtivo();
+                   
                     if(pessoa.getUsuario().getAuthority().equals("ROLE_CLIENTE"))
                     {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("../cliente");
@@ -66,10 +66,10 @@ public class usuarioMB  {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("../intranet");
                     }
              }catch (Exception ex) {
-                 pessoa = new Pessoa();
                FacesContext.getCurrentInstance().getExternalContext().redirect("./login.xhtml");
              } 
     }
+
     public void verificaFuncionarioAtivo() throws IOException{
         try  {
                    if(funcionario.getId() == null)
@@ -87,6 +87,19 @@ public class usuarioMB  {
              }catch (Exception ex) {
                funcionario = new Funcionario();
                FacesContext.getCurrentInstance().getExternalContext().redirect("./login.xhtml");
+             } 
+    }
+    public void verificaCliente() throws IOException{
+        try  {
+                   if(pessoa.getId() == null)
+                   {
+                    pessoa = 
+                             ejb.retornaPessoaParaSessao(((SecurityContext) SecurityContextHolder.getContext()).
+                             getAuthentication().getName()) ;
+                   }  
+             }catch (Exception ex) {
+               pessoa = new Pessoa();
+               FacesContext.getCurrentInstance().getExternalContext().redirect("./../login.xhtml");
              } 
     }
   

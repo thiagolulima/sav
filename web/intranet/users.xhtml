@@ -45,7 +45,7 @@
               </h:form>
               <h:form id="form3">
                    <p:dialog   header="Lista de usuarios"  widgetVar="cadastroUsers"  showEffect="fade" hideEffect="explode" > 
-                          <p:dataTable var="user" value="#{ usersMB.findByUsersTodos()}" style="margin-top: 15px;">
+                       <p:dataTable var="user" value="#{ usersMB.findByUsersNaoCadastrados()}" style="margin-top: 15px;">
                               <p:column  filterBy="#{user.id}"     headerText="Código:" filterMatchMode="contains" style="color:#003399;" width="10"  >
                                  <h:outputLabel value="#{user.id}"/> 
                               </p:column>
@@ -64,11 +64,8 @@
                    </p:dialog>            
               </h:form>
               <h:form id="form" style="margin-top: 20px;">
-                  <div class="short-table white">
-                    
+                  <div class="short-table white">  
                   <p:dataTable var="user" value="#{ usersMB.findByUsers()}" style="margin-top: 5px;">
-
-                       
                       <p:column  filterBy="#{user.id}"     headerText="Código Cliente" filterMatchMode="contains" style="color:#003399;" width="10"  >
                           <h:outputLabel value="#{user.id}"/> 
                       </p:column>
@@ -88,7 +85,6 @@
                    </p:column> 
                 </p:dataTable>
                 </div>
-                 
                 <p:growl id="msg"/>
               </h:form>
               <h:form id="form4">

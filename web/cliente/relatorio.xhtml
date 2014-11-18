@@ -10,13 +10,36 @@
 
         <ui:composition template="./../template/clienteTemp.xhtml">
             <ui:define name="conteudo">
-                <h1 style="text-align:  center; color:  #0055CC;"> Meus Pedidos </h1>
-                <center><h:form id="form" style="margin-top: 25px; ">
-                     <p:dataTable var="pedido" value="#{ pedidoMB.findByAllPedidosCliente()}" style="margin-top: 15px; max-width:800px; ">
+                <h1 style="text-align:  center; color:  #0055CC;"> Pedidos Finalizados </h1>
+                <center>
+                    
+                    
+                    <h:form id="form" style="margin-top: 25px; ">
+                        <p:panelGrid columns="2">
+                              <h:outputLabel value="Selecione o Filtro"/>
+                              <p:selectOneMenu value="#{relatorioMB.controlerPesquisa}">
+                                  <f:selectItem itemValue="1" itemLabel="Codido Produto"/>
+                                  <f:selectItem itemValue="2" itemLabel="Data"/>
+                                  <p:ajax  update=":form"/>
+                              </p:selectOneMenu>
+                              <p:outputLabel value="Codido" rendered="#{relatorioMB.controlerPesquisa == 1}"/> 
+                              <p:inputText value="#{relatorioMB.pesquisa}" required="true" size="10" label="Codigo" rendered="#{relatorioMB.controlerPesquisa == 1}">
+                                  <p:ajax  event="blur" update="form"/>
+                              </p:inputText>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" id="porData" rendered="#{relatorioMB.controlerPesquisa == 2}">
+                            <h:outputLabel value="Data Inicial:"/>
+                            <p:calendar value="#{relatorioMB.dataInicial}" size="10"/>
+                            <h:outputLabel value="Data Final:"/>
+                            <p:calendar value="#{relatorioMB.dataFinal}" size="10"/>
+                            <h:outputLabel value=""/>
+                            <p:commandButton update=":form" value="buscar"/>
+                        </p:panelGrid>
+                        <p:dataTable var="pedido" value="#{ relatorioMB.findPedidosVenda()}" style="margin-top: 15px; max-width:800px; ">
                        <f:facet name="header">
                            <h3>Meus pedidos</h3>
                        </f:facet>
-                           <p:column  filterBy="#{pedido.id}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                           <p:column     headerText="Código" style="color:#003399;" width="10"  >
                                <h:outputLabel value="#{pedido.id}"/> 
                            </p:column>
                            <p:column      headerText="Data Pedido" filterMatchMode="contains" style="color:#003399;"   >

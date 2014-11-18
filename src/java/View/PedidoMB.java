@@ -122,15 +122,11 @@ public class PedidoMB {
                if(items.size()< 1){
                     adicionarMensagem(FacesMessage.SEVERITY_ERROR,"Lista sem Produtos!"); 
                }else{
-                     orcamento.setProdutos(items);
-                     if(pedido.getId() != null)
-                     {
-                      pedidoEJB.incluiOrcamento(orcamento);
-                      pedidoEJB.atualizaItens(items);
-                     }
+                      orcamento.setProdutos(items);
                       pedido.setOrcamento(orcamento);
                       funcionario.verificaFuncionarioAtivo();
                       pedido.getOrcamento().setFuncionario(funcionario.getFuncionario());
+                      pedidoEJB.atualizaItens(pedido.getOrcamento().getProdutos());
                       pedido = pedidoEJB.incluiPedido(pedido);
                       this.orcamento = pedido.getOrcamento();
                       adicionarMensagem(FacesMessage.SEVERITY_INFO ,"Pedido Mantido com Sucesso!"); 
@@ -151,7 +147,6 @@ public class PedidoMB {
                else{
                    pedidoEJB.zeraNaoAutorizados(items);
                    orcamento.setBloqueio(false);
-                   pedidoEJB.incluiOrcamento(orcamento);
                    pedido = pedidoEJB.incluiPedido(pedido);
                    novoPedido();
                    adicionarMensagem(FacesMessage.SEVERITY_INFO ,"Pedido Mantido com Sucesso!"); 
@@ -160,6 +155,10 @@ public class PedidoMB {
     public List<PedidoVenda> findByAllPedidos() throws IOException{
         funcionario.verificaFuncionarioAtivo();
         return pedidoEJB.findByAllPedidos(funcionario.getFuncionario());
+    }
+    public List<PedidoVenda> findByAllPedidosCliente() throws IOException{
+        funcionario.verificaCliente();
+        return pedidoEJB.findByAllPedidosCliente(funcionario.getPessoa());
     }
     public List<PedidoVenda> findByAllPedidosBloqueados(){
         return pedidoEJB.findByAllPedidosBloqueados();

@@ -237,7 +237,7 @@
                 </p:dialog>
                 </h:form>
                 <h:form id="form" style="margin-top: 25px; ">
-                    <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentos()}" style="margin-top: 15px; max-width: 800px; ">
+                    <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentos()}" style="margin-top: 15px; max-width: 980px; ">
                        <f:facet name="header">
                            <h3>Lista de orçamentos</h3>
                        </f:facet>
@@ -256,8 +256,13 @@
                            <p:column  filterBy="#{orcamento.pessoa.nome}"     headerText="Cliente" filterMatchMode="contains" style="color:#003399;"   >
                                <h:outputLabel value="#{orcamento.pessoa.nome}"/> 
                           </p:column>
-                         <p:column  filterBy="#{orcamento.preCadastroCliente.nome}"     headerText="Cliente sem Cadastro" filterMatchMode="contains" style="color:#003399;"   >
+                           <p:column      headerText="Pre Cadastro"  style="color:#003399;"   > 
+                          </p:column>
+                         <p:column  filterBy="#{orcamento.preCadastroCliente.nome}"     headerText="Nome" filterMatchMode="contains" style="color:#003399;"   >
                             <h:outputLabel value="#{orcamento.preCadastroCliente.nome}"/> 
+                          </p:column>
+                        <p:column  filterBy="#{orcamento.preCadastroCliente.id}"     headerText="Codigo " filterMatchMode="contains" style="color:#003399;"   >
+                            <h:outputLabel value="#{orcamento.preCadastroCliente.id}"/> 
                           </p:column>
                          <p:column  headerText="Editar" style="color:#003399;" width="10">
                              <p:commandLink update=":form :form2"  title="Editar" action="#{orcamentoMB.setaItensECadastroEdicao(orcamento)}"  >  

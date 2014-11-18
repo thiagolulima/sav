@@ -13,7 +13,46 @@
             <ui:define name="conteudo">
                
                 <h:form id="form2">   
-                    
+                    <p:commandButton oncomplete="orcamento.show()" update=":form2:orc" value="Selecionar orçamento" style="margin-bottom: 15px;"/>
+                    <p:dialog   header="Lista de Orcamentos"  widgetVar="orcamento" modal="true"  showEffect="fade" hideEffect="explode">
+                        <p:outputPanel id="orc">
+                             
+                              <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentos()}" style="margin-top: 15px; max-width: 980px; ">
+                                 <f:facet name="header">
+                                    <h3>Lista de orçamentos</h3>
+                                  </f:facet>
+                                  <p:column  filterBy="#{orcamento.id}"     headerText="Código" filterMatchMode="contains" style="color:#003399;" width="10"  >
+                                     <h:outputLabel value="#{orcamento.id}"/> 
+                                  </p:column>
+                                  <p:column headerText="Data de Validade" style="color:#003399;" >
+                                    <h:outputLabel value="#{orcamento.dataValidade}"   styleClass="prodCss">
+                                       <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" />  
+                                    </h:outputLabel>
+                                  </p:column>
+                                  <p:column  filterBy="#{orcamento.pessoa.id}"     headerText="Cod Cliente" filterMatchMode="contains" style="color:#003399;"   >
+                                    <h:outputLabel value="#{orcamento.pessoa.id}"/> 
+                                  </p:column>
+                                  <p:column  filterBy="#{orcamento.pessoa.nome}"     headerText="Cliente" filterMatchMode="contains" style="color:#003399;"   >
+                                    <h:outputLabel value="#{orcamento.pessoa.nome}"/> 
+                                  </p:column>
+                                  <p:column      headerText="Pre Cadastro"  style="color:#003399;"   > 
+                                  </p:column>
+                                  <p:column  filterBy="#{orcamento.preCadastroCliente.nome}"     headerText="Nome" filterMatchMode="contains" style="color:#003399;"   >
+                                    <h:outputLabel value="#{orcamento.preCadastroCliente.nome}"/> 
+                                  </p:column>
+                                  <p:column  filterBy="#{orcamento.preCadastroCliente.id}"     headerText="Codigo " filterMatchMode="contains" style="color:#003399;"   >
+                                    <h:outputLabel value="#{orcamento.preCadastroCliente.id}"/> 
+                                  </p:column>
+                                  <p:column  headerText="Selecionar" style="color:#003399;" width="10">
+                                      <p:commandLink update=":form :form2"  title="Selecionar" action="#{pedidoMB.setaOrcamento(orcamento)}"  >  
+                                         <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                                         <f:setPropertyActionListener value="#{orcamento}"   
+                                                                      target="#{ pedidoMB.orcamento}" />  
+                                      </p:commandLink> 
+                                   </p:column>
+                               </p:dataTable>
+                             </p:outputPanel>
+                        </p:dialog>
                         <h:panelGrid columns="8" id="cadastro" >   
                             <p:outputLabel value="Data:"  styleClass="prodCss"/>
                             <h:outputText value="#{pedidoMB.retornaDataPedido()}"   styleClass="prodCss">

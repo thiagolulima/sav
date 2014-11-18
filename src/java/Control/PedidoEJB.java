@@ -5,7 +5,9 @@ import Model.Funcionario;
 import Model.ItemDeVenda;
 import Model.Orcamento;
 import Model.PedidoVenda;
+import Model.Pessoa;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,13 +45,53 @@ public class PedidoEJB {
        }
        public void atualizaItens(List<ItemDeVenda> itens){
            for(ItemDeVenda item : itens){
-               em.merge(item.getDesconto());
+               if(item.getId() != null){
+                 em.merge(item.getDesconto());
+               }
            }
        }
         public List<PedidoVenda> findByAllPedidos( Funcionario funcionario){
             
              List<PedidoVenda> lista = em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.funcionario.id =:id")
                      .setParameter("id", funcionario.getId()).getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+           
+        }
+        public List<PedidoVenda> findByAllPedidosCliente( Pessoa pessoa){
+            
+             List<PedidoVenda> lista = em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.pessoa.id =:id AND u.status.id <> 3")
+                     .setParameter("id",pessoa.getId())
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+           
+        }
+        public List<PedidoVenda> findByAllPedidosClientePesquisa( Pessoa pessoa, int pesquisa){
+            
+             List<PedidoVenda> lista = em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.pessoa.id =:id AND u.status.id <> 3 AND u.id =:pedidoId")
+                     .setParameter("id",pessoa.getId()).setParameter("pedidoId",pesquisa )
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+        }
+        public List<PedidoVenda> findByAllPedidosData( Date dataInicial,Date dataFim, Pessoa pessoa){
+            
+             List<PedidoVenda> lista = 
+                     em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.pessoa.id =:id AND u.status.id <> 3 AND u.dataPedido BETWEEN :dataInicial AND :dataFim ")
+                     .setParameter("id",pessoa.getId())
+                     .setParameter("dataInicial", dataInicial)
+                     .setParameter("dataFim", dataFim)
+                     .getResultList();
              if (lista.size() <1){
                     return lista = new ArrayList<PedidoVenda>();
                 }

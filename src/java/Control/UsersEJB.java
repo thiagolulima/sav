@@ -17,11 +17,20 @@ public class UsersEJB {
          @PersistenceContext
          EntityManager em;
          public void incluiUsuario(Pessoa pessoa){
-                em.merge(pessoa.getUsuario());
-                em.merge(pessoa);
+                em.merge(pessoa); 
+         }
+         public void alteraUsuario(Pessoa pessoa){
+                em.merge(pessoa.getUsuario()); 
          }
          public List<Pessoa> findByUsuarios(){
               List<Pessoa> lista = em.createQuery("select u from Pessoa u where u.usuario.id > 0 ").getResultList();
+              if(lista.size() < 1){
+                  return lista = new ArrayList<Pessoa>();
+              }
+              return lista;
+         } 
+         public List<Pessoa> findByUsuariosNaoCadastrados(){
+              List<Pessoa> lista = em.createQuery("select u from Pessoa u  Where (u.usuario IS NULL) ").getResultList();
               if(lista.size() < 1){
                   return lista = new ArrayList<Pessoa>();
               }

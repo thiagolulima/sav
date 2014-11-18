@@ -2,14 +2,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
         <ui:composition template="./../template/intra.xhtml">
 
             <ui:define name="conteudo">
-              <h4>Benvindo <p:outputLabel value="#{usuarioMB.pessoa.nome}"/></h4>
+                
+              <center> <h:form id="form" style="margin-top: 25px;  margin: auto;">
+                      <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentos()}" style="margin-top: 15px; max-width: 800px; ">
+                       <f:facet name="header">
+                           <h3>Lista de Orçamentos próximo do vencimento</h3>
+                       </f:facet>
+                           <p:column     headerText="Código"  style="color:#003399;" width="10"  >
+                               <h:outputLabel value="#{orcamento.id}"/> 
+                           </p:column>
+                           <p:column headerText="Data de Validade" style="color:#003399;" >
+                            <h:outputLabel value="#{orcamento.dataValidade}"   styleClass="prodCss">
+                                <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" />  
+                            </h:outputLabel>
+                          </p:column>
+                           <p:column    headerText="Cod Cliente"  style="color:#003399;"   >
+                               <h:outputLabel value="#{orcamento.pessoa.id}"/> 
+                          </p:column>
+                      
+                           <p:column     headerText="Cliente"  style="color:#003399;"   >
+                               <h:outputLabel value="#{orcamento.pessoa.nome}"/> 
+                          </p:column>
+                         <p:column      headerText="Cliente sem Cadastro" style="color:#003399;"   >
+                            <h:outputLabel value="#{orcamento.preCadastroCliente.nome}"/> 
+                         </p:column>
+                </p:dataTable>
+                <p:growl id="msg"/>
+              </h:form>
+              </center>
             </ui:define>
 
         </ui:composition>

@@ -84,16 +84,16 @@
        
     </h:head>
     <!-- START BODY -->
-    <h:body class="no_js responsive stretched" >
+    <h:body class="no_js responsive stretched" onload="#{usuarioMB.verificaCliente()}" >
         
         <!-- START BG SHADOW -->
         <div class="bg-shadow">
             <div id="topo" >
                 <div style="float:left; color:  #ffffff; font-weight: bold; margin-left: 70px;  font-size: 15px;">  
-                     
-                    <p:outputLabel value="#{usuarioMB.retornaNomeLogado()}"/>
+                    Bem vindo(a)   
+                    <p:outputLabel value="#{usuarioMB.pessoa.nome}"/>
                     
-                    
+                    <a href="./../logout" title="sair"   style="font-size: 15px; color: #ffffff; margin-left: 15px;  ">Sair</a>
                 
                 </div>
                 <blockquote class="text-quote-quote" style="float: right; margin-right: 15px; color:  #ffffff; font-weight: bold; ">"Soluções em Informática!"</blockquote >
@@ -130,30 +130,15 @@
                                 <li>
                                     <a href="./../">HOME</a>
                                 </li>
-                                
                                 <li>
-                                    <a href="#">PROMOÇÕES</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="#">SERVIÇOS</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="#">CONTATO</a>
+                                    <a href="./">PEDIDOS</a>
                                 </li>
                                 <li>
-                                    <a href="#">QUEM SOMOS</a>
-                                </li>
+                                    <a href="relatorio.xhtml">RELATORIOS</a>
+                                </li>  
                                 <li>
-                                    <a href="#">EQUIPE</a>       
-                                </li>
-                                <li>
-                                    <a href="./../login/verifica.xhtml">ACESSO RESTRITO</a>
-                                </li>
-                                
-                               
-                                
+                                    <a href="alteraSenha.xhtml">MUDAR SENHA</a>
+                                </li>            
                             </ul>
                         </div>
                         <!-- END MAIN NAVIGATION -->
@@ -165,8 +150,21 @@
                     
                 </div>
                 <!-- END HEADER -->
+               
                 <div id="conteudo" style=" margin:  auto;">
                     <ui:insert name="conteudo" />
+                     <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                     <f:facet name="default">
+                     </f:facet>
+                     <f:facet name="start">
+                     </f:facet>
+                     <f:facet name="complete">
+                     </f:facet>
+                    </p:ajaxStatus>
+                    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <img src="#{facesContext.externalContext.requestContextPath}/resources/images/carregando.gif"/>
+                    </p:dialog>
                 </div>
               
                 				

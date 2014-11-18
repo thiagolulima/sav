@@ -397,7 +397,7 @@ body.no_js .classic #nav ul li ul.submenu li:hover > ul, body.no_js .classic #na
 }
 .formulario{
            width: 400px;
-           height: 280px;
+           height: 325px;
            /* IE10 Consumer Preview */ 
            background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #CCCCCC 100%);
            /* Mozilla Firefox */ 

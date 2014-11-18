@@ -89,7 +89,7 @@
                           <h:outputLabel value="Entrada:"  styleClass="prodCss" />
                           <p:inputText value="#{pedidoMB.orcamento.entrada}" style="margin-left: 5px;" size="13"  disabled="#{pedidoMB.pedido.orcamento.bloqueio}" />
                         </h:panelGrid>    
-                    <p:commandButton  update=":form2 :form"  action="#{pedidoMB.autorizaPedido()}" value="Confirmar" />
+                    <p:commandButton  update=":form2 :form"  action="#{pedidoMB.autorizaPedido()}" value="Confirmar"  style="margin-top: 15px;"/>
                   <p:growl id="msgs"/>
                  
                 </h:form>

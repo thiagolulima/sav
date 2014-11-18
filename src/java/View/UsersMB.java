@@ -4,11 +4,14 @@ package View;
 import Control.UsersEJB;
 import Model.Pessoa;
 import Model.Users;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 
 @javax.faces.bean.ManagedBean
@@ -17,10 +20,14 @@ public class UsersMB {
 
     Pessoa pessoa  = new Pessoa();
     Users user = new Users();
+    private List<Pessoa> pessoas = new ArrayList<Pessoa>();
     public String senha;
     public String confirmaSenha ;
+    public String senhaAntiga;
     @EJB
     UsersEJB ejb;
+    @Inject
+    usuarioMB userMB;
     public UsersMB() {
     }
 
@@ -54,11 +61,21 @@ public class UsersMB {
     public List<Pessoa> findByUsersTodos(){
         return ejb.findByTodosUsuarios();
     }
-
+    public List<Pessoa> findByUsersNaoCadastrados(){
+        return pessoas = ejb.findByUsuariosNaoCadastrados();
+    }
     public String getConfirmaSenha() {
         return confirmaSenha;
     }
 
+    public String getSenhaAntiga() {
+        return senhaAntiga;
+    }
+
+    public void setSenhaAntiga(String SenhaAntiga) {
+        this.senhaAntiga = SenhaAntiga;
+    }
+   
     public void setConfirmaSenha(String confirmaSenha) {
         this.confirmaSenha = confirmaSenha;
     }
@@ -80,13 +97,13 @@ public class UsersMB {
     }
     public void edicaoUser(){
           if(confirmaSenha.trim().equals("") && senha.trim().equals("") ){
-            ejb.incluiUsuario(pessoa);
+            ejb.alteraUsuario(pessoa);
             adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario Mantido com sucesso!"); 
          }else{
               if(senha.equals(confirmaSenha))
                {
                 pessoa.getUsuario().setPassword(senha);
-                ejb.incluiUsuario(pessoa);
+                ejb.alteraUsuario(pessoa);
                 adicionarMensagem(FacesMessage.SEVERITY_INFO, "Usuario Mantido com sucesso!"); 
                 pessoa = new Pessoa();
                }
@@ -123,5 +140,22 @@ public class UsersMB {
      public void reseta(){
          this.pessoa = new Pessoa();
          this.user = new Users();
+     }
+     public void alteraSenha() throws IOException{
+         userMB.verificaCliente();
+         if(userMB.getPessoa().getUsuario().getPassword().equals(senhaAntiga))
+         {
+             if(senha.equals(confirmaSenha))
+             {
+                 userMB.getPessoa().getUsuario().setPassword(senha);
+                 ejb.alteraUsuario(userMB.getPessoa());
+                 adicionarMensagem(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso!"); 
+             }
+             else{
+                  adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Senha ou confirmacao incorreta!"); 
+              }
+         }else{
+               adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Senha antiga incorreta!");     
+         }
      }
 }

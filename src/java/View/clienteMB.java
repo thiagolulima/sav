@@ -6,6 +6,7 @@ import Model.Endereco;
 import Model.Estado;
 import Model.Fisica;
 import Model.Juridica;
+import Model.PreCadastroCliente;
 import Model.Telefones;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,16 +23,20 @@ import javax.inject.Inject;
 @ViewScoped
 public class clienteMB {
 
-    Fisica fisica = new Fisica();
-    Juridica juridica = new Juridica();
-    Endereco endereco = new Endereco();
-    Telefones telefone = new Telefones();
+    private Fisica fisica = new Fisica();
+    private Juridica juridica = new Juridica();
+    private Endereco endereco = new Endereco();
+    private Telefones telefone = new Telefones();
+    private PreCadastroCliente preCadastro = new PreCadastroCliente();
     int tipoPesquisa = 0;
+    int idPreCadastro = 0;
     String pesquisa = "";
     @EJB
     ClienteEJB ejbCliente;
     @Inject
     enderecoMB enderecoMB;
+    @Inject
+    PreCadastroMB preCadastroCliente;
     public clienteMB() {
     }
 
@@ -81,6 +86,14 @@ public class clienteMB {
 
     public void setPesquisa(String pesquisa) {
         this.pesquisa = pesquisa;
+    }
+
+    public int getIdPreCadastro() {
+        return idPreCadastro;
+    }
+
+    public void setIdPreCadastro(int idPreCadastro) {
+        this.idPreCadastro = idPreCadastro;
     }
     
     public void incluiCliente(){
@@ -233,4 +246,28 @@ public class clienteMB {
       facesContext.addMessage(null,
       new FacesMessage(severidade, msg, null));
     }
+     public void buscaPreCadastroFisica(){
+        preCadastro = preCadastroCliente.getPreCadastro(idPreCadastro);
+        if(preCadastro != null){
+           fisica.setNome(preCadastro.getNome());
+           fisica.setEmail(preCadastro.getEmail());
+           telefone = new Telefones();
+           telefone.setNumeroTel(preCadastro.getTelefone());
+           fisica.getTelefones().add(telefone);
+           telefone = new Telefones();
+           adicionarMensagem(FacesMessage.SEVERITY_INFO, "Pre Cadastro encontrado!"); 
+        }
+     }
+     public void buscaPreCadastroJuridica(){
+        preCadastro = preCadastroCliente.getPreCadastro(idPreCadastro);
+        if(preCadastro != null){
+           juridica.setNome(preCadastro.getNome());
+           juridica.setEmail(preCadastro.getEmail());
+           telefone = new Telefones();
+           telefone.setNumeroTel(preCadastro.getTelefone());
+           juridica.getTelefones().add(telefone);
+           telefone = new Telefones();
+           adicionarMensagem(FacesMessage.SEVERITY_INFO, "Pre Cadastro encontrado!"); 
+        }
+     }
 }

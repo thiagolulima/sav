@@ -7,7 +7,12 @@
  
            <h2>Pessoa Juridica</h2>
            <h:form id="formcj">
-                 
+                 <p:panelGrid columns="2" style="margin-bottom: 10px; margin-left: 3px;" >
+                   <p:outputLabel value="Pre Cadastro:"/> 
+                   <p:inputText value="#{clienteMB.idPreCadastro}" size="8">
+                       <p:ajax update="formcj" event="blur" listener="#{clienteMB.buscaPreCadastroJuridica()}"/>
+                   </p:inputText>
+                 </p:panelGrid>
                   <p:growl id="msgs"/>
                   <p:panelGrid columns="4" style="background-color:  #f4f4f4;">
                       <p:outputLabel value="Razão Social*:"/> 
