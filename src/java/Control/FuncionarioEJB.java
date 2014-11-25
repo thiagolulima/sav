@@ -29,6 +29,9 @@ public class FuncionarioEJB {
        public List<Funcionario> findAllFuncionario(){
          return  em.createQuery("SELECT u FROM Funcionario u ").getResultList();
        }
+       public List<Funcionario> findAllFuncionarioVendedor(){
+         return  em.createQuery("SELECT u FROM Funcionario u Where u.funcionarioAtivo = 1 and u.usuario.authority  = 'ROLE_MASTER' OR u.usuario.authority = 'ROLE_VENDEDOR' ").getResultList();
+       }
        public boolean verificaSeACadastradoEmail(Pessoa pessoa) throws Exception{
             
              List<Pessoa> lista = em.createQuery("SELECT u FROM Pessoa u WHERE u.email=:email and u.id <> :id")

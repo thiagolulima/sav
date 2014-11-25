@@ -33,6 +33,8 @@ public class OrcamentoMB {
     OrcamentoEJB orcamentoEJB;
     @Inject
     usuarioMB funcionario;
+    @Inject
+    ImpressaoMB imprime;
     public OrcamentoMB() {
     }
     public Orcamento incluiOrcamento(Orcamento orcamento)
@@ -191,5 +193,18 @@ public class OrcamentoMB {
                    novoOrcamento();
                    adicionarMensagem(FacesMessage.SEVERITY_INFO ,"Orcamento Mantido com Sucesso!"); 
                  }
+    }
+    public String imprimir() throws IOException{
+        orcamento.setProdutos(items);
+        imprime.setOrcamento(orcamento);
+       return "javascript:imprimirOrc()" ;
+    }
+    public boolean habilitaImpressao(){
+        if(orcamento.getId()== null || orcamento.isBloqueio() == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

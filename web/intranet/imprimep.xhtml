@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body  >
+
+        <ui:composition template="./../template/impressao.xhtml">
+            <ui:define name="conteudo">
+                
+                <div id="cabecalho" style="margin-top: 10px;" >
+                    <center><h1 style=" font-size: 20px;  margin: auto; ">Pedido </h1></center>
+                            <p:panelGrid columns="8"  >
+                                <h:outputText value="Cliente" styleClass="cabecalho" style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.nome}" styleClass="cabecalho"/>
+                                <h:outputText value="Cód Cliente" styleClass="cabecalho" style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.id}" styleClass="cabecalho"/>
+                                <h:outputText value="Data: " styleClass="cabecalho" style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.dataPedido}" styleClass="cabecalho">
+                                  <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" /> 
+                                </h:outputText>
+                                <h:outputText value="Pedido:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value="#{ impressaoMB.pedido.id}" styleClass="cabecalho" />
+                                <h:outputText value="Endereco:"   styleClass="cabecalho"  style="font-weight: bold; margin-top: "/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.logradouro}" styleClass="cabecalho"/> 
+                                <h:outputText value="Numero:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.numero}" styleClass="cabecalho"/> 
+                                <h:outputText value="Bairro:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.bairro}" styleClass="cabecalho"/> 
+                                <h:outputText value="Estado:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.estado.sigla}" styleClass="cabecalho"/> 
+                                 <h:outputText value="Complemento:"   styleClass="cabecalho"  style="font-weight: bold;  "/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.complemento}" styleClass="cabecalho"/> 
+                                <h:outputText value="Cep:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value="#{impressaoMB.pedido.orcamento.pessoa.endereco.cep}" styleClass="cabecalho"/>
+                                <h:outputText value=""   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value=""   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value=""   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                <h:outputText value=""   styleClass="cabecalho"  style="font-weight: bold;"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" style=" float: left; margin-top: 0px;">
+                                      <h:outputText value="      Telefones:"   styleClass="cabecalho"  style="font-weight: bold;"/>
+                                      <h:outputText value="#{impressaoMB.retornaTel()}"   styleClass="cabecalho"  />
+                             </p:panelGrid>
+                        </div>
+                <div id="ListaProd">
+                    <p:dataTable var="produto" value="#{ impressaoMB.pedido.orcamento.produtos}" style="margin-top: 32px; ">
+                                    <f:facet name="header">
+                                         Lista de Produtos
+                                    </f:facet>
+                                 <p:column     headerText="Código"  >
+                                        <h:outputLabel value="#{produto.produto.codProduto}"/> 
+                                 </p:column>
+                                <p:column      headerText="Descrição"    >
+                                     <h:outputLabel value="#{produto.produto.descricao}"/> 
+                                 </p:column>
+                                 <p:column      headerText="Numero de Série"     >
+                                  <h:outputLabel value="#{produto.produto.numeroSerie}"/> 
+                                 </p:column>
+                                 <p:column    headerText="Quantidade"    >
+                                     <h:outputLabel value="#{produto.quantidade}"/> 
+                                 </p:column>
+                                 <p:column    headerText="Valor"     >
+                                     <h:outputLabel value="#{produto.valorPago}"/> 
+                                 </p:column>
+                                 <p:column    headerText="Desconto R$"    >
+                                     <h:outputText value="#{produto.desconto.valorDesconto}" />    
+                                 </p:column>
+                                 <p:column    headerText="Desconto % "    >
+                                     <h:outputText value="#{produto.desconto.porcentagemDesconto}" />  
+                                 </p:column>
+                                 <p:column    headerText="Total"   >
+                                     <h:outputLabel value="#{produto.retornaValorTotalItemComDesconto()}"/> 
+                                 </p:column> 
+                                <f:facet name="footer">
+                                Total:
+                                <h:outputText value="#{ impressaoMB.valorTotalCompra()}" /> 
+                              </f:facet>
+                            </p:dataTable>
+                    <h:panelGrid columns="3"   id="status" style="margin: auto;">
+                             <h:outputLabel value="Condição de Pagamento:"  styleClass="prodCss"  style="margin-left: 20px; font-size: 14px;" />
+                             <h:outputLabel value="#{impressaoMB.pedido.orcamento.condicaoPagamento.descricao}"  styleClass="prodCss"  style="margin-left: 20px; font-size: 14px;" />
+                               <h:panelGrid columns="2" rendered="#{impressaoMB.pedido.orcamento.verificaPrazoZero() == true}"  >
+                                   <h:outputLabel value="Entrada:"  styleClass="prodCss"  style="font-size: 14px;"/>
+                                 <h:outputText value="#{impressaoMB.pedido.orcamento.entrada}" style="margin-left: 5px; font-size: 14px;"    />
+                               </h:panelGrid>
+                              
+                   </h:panelGrid>
+                    <h:panelGrid columns="2" style="margin: auto; margin-top: 20px;">
+                          <h:outputLabel value="___________________________"  styleClass="prodCss"  style="font-size: 14px;"/>
+                          <h:outputLabel value="___________________________"  styleClass="prodCss"  style="font-size: 14px;"/>
+                          <h:outputLabel value="Vendedor: #{impressaoMB.pedido.orcamento.funcionario.nome}"  styleClass="prodCss"  style="font-size: 14px;"/>
+                          <h:outputLabel value="Cliente: #{impressaoMB.pedido.orcamento.pessoa.nome}"  styleClass="prodCss"  style="font-size: 14px;"/>
+                          
+                    </h:panelGrid>
+                          
+                </div>
+             
+                    
+                 
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>

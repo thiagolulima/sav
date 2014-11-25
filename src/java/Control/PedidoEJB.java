@@ -139,5 +139,19 @@ public class PedidoEJB {
                em.merge(item.getDesconto());
            }
         }
+     public List<PedidoVenda> findByAllPedidosPeriodo( Date dataInicial,Date dataFim){
+            
+             List<PedidoVenda> lista = 
+                     em.createQuery("Select u From PedidoVenda u WHERE  u.status.id = 3 AND u.dataPedido BETWEEN :dataInicial AND :dataFim ")
+                     .setParameter("dataInicial", dataInicial)
+                     .setParameter("dataFim", dataFim)
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+           
+        }
 
-}
+} 

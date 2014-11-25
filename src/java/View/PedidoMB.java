@@ -40,6 +40,8 @@ public class PedidoMB {
     OrcamentoMB orcamentoMB ;
     @Inject
     usuarioMB funcionario;
+    @Inject
+    ImpressaoMB imprime;
     public PedidoMB() {
         
     }
@@ -176,6 +178,12 @@ public class PedidoMB {
     public void setaOrcamento(Orcamento orcamento){
         this.orcamento = orcamento;
         items = orcamento.getProdutos();
+    
+    }
+    public void setaOrcamentoDeBusca(Orcamento orcamento){
+        this.orcamento = orcamento;
+        items = orcamento.getProdutos();
+        pedido = new PedidoVenda();
     }
     public void novoPedido(){
         pedido = new PedidoVenda();
@@ -187,6 +195,20 @@ public class PedidoMB {
     public String valorTotalCompra(){
         this.orcamento.setProdutos(items);
         return orcamento.retornaTotalCompra();
+    }
+    public String imprimir() throws IOException{
+        orcamento.setProdutos(items);
+        pedido.setOrcamento(orcamento);
+        imprime.setPedido(pedido);
+       return "javascript:imprimir()" ;
+    }
+    public boolean habilitaImpressao(){
+        if(pedido.getId()== null || pedido.getOrcamento().isBloqueio() == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
    

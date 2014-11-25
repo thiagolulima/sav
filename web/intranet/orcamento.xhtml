@@ -109,6 +109,7 @@
                       </p:outputPanel>
                     <p:commandButton  update=":form2 :form" disabled="#{ orcamentoMB.orcamento.bloqueio}" action="#{orcamentoMB.salvaOrcamento()}"  value="Confirmar" style="margin-top: 15px;"/>
                     <p:commandButton  update=":form2 :form"  action="#{orcamentoMB.novoOrcamento()}" value="Novo" style="margin-top: 15px; margin-left: 40px; "/>
+                    <p:commandButton   oncomplete="#{orcamentoMB.imprimir()}"  disabled="#{ orcamentoMB.habilitaImpressao()}" value="Imprimir" style="margin-top: 15px; margin-left: 40px; "/>
                   <p:growl id="msgs"/>
                  <p:dialog   header="Lista"  widgetVar="dialogo" modal="true"  showEffect="fade" hideEffect="explode">
                      <h2>Selecione tipo de cliente</h2>

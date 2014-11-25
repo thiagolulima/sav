@@ -16,7 +16,6 @@
                     <p:commandButton oncomplete="orcamento.show()" update=":form2:orc" value="Selecionar orçamento" style="margin-bottom: 15px;"/>
                     <p:dialog   header="Lista de Orcamentos"  widgetVar="orcamento" modal="true"  showEffect="fade" hideEffect="explode">
                         <p:outputPanel id="orc">
-                             
                               <p:dataTable var="orcamento" value="#{ orcamentoMB.findByAllOrcamentos()}" style="margin-top: 15px; max-width: 980px; ">
                                  <f:facet name="header">
                                     <h3>Lista de orçamentos</h3>
@@ -44,7 +43,7 @@
                                     <h:outputLabel value="#{orcamento.preCadastroCliente.id}"/> 
                                   </p:column>
                                   <p:column  headerText="Selecionar" style="color:#003399;" width="10">
-                                      <p:commandLink update=":form :form2"  title="Selecionar" action="#{pedidoMB.setaOrcamento(orcamento)}"  >  
+                                      <p:commandLink update=":form :form2"  title="Selecionar" action="#{pedidoMB.setaOrcamentoDeBusca(orcamento)}"  >  
                                          <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
                                          <f:setPropertyActionListener value="#{orcamento}"   
                                                                       target="#{ pedidoMB.orcamento}" />  
@@ -132,7 +131,8 @@
                           <p:inputText value="#{pedidoMB.orcamento.entrada}" style="margin-left: 5px;" size="13"  disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" />
                         </h:panelGrid>    
                     <p:commandButton  update=":form2 :form" disabled="#{ pedidoMB.pedido.orcamento.bloqueio}" action="#{pedidoMB.salvaPedido()}" value="Confirmar" style="margin-top: 15px;"/>
-                    <p:commandButton  update=":form2 :form"  action="#{pedidoMB.novoPedido()}" value="Novo" style="margin-top: 15px; margin-left: 40px; "/>
+                    <p:commandButton  update=":form2 :form"  action="#{pedidoMB.novoPedido()}"   value="Novo" style="margin-top: 15px; margin-left: 40px; "/>
+                    <p:commandButton   oncomplete="#{pedidoMB.imprimir()}"  disabled="#{ pedidoMB.habilitaImpressao()}" value="Imprimir" style="margin-top: 15px; margin-left: 40px; "/>
                   <p:growl id="msgs"/>
                  <p:dialog   header="Lista"  widgetVar="dialogo" modal="true"  showEffect="fade" hideEffect="explode">
                      <h2>Selecione tipo de cliente</h2>

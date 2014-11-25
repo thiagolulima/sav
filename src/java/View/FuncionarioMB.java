@@ -95,6 +95,9 @@ public class FuncionarioMB {
     public List<Funcionario> findByAllFuncionarios() throws Exception{
         return ejb.findAllFuncionario(tipoPesquisa, pesquisa);
     }
+    public List<Funcionario> findByAllFuncionariosVendedores() {
+        return ejb.findAllFuncionarioVendedor();
+    }
     public void adicionaEnderecoPraEdicao(){
         this.endereco = funcionario.getEndereco();
     }
