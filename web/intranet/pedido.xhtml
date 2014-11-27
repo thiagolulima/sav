@@ -11,7 +11,7 @@
         <ui:composition template="./../template/intra.xhtml">
 
             <ui:define name="conteudo">
-               
+                <center> 
                 <h:form id="form2">   
                     <p:commandButton oncomplete="orcamento.show()" update=":form2:orc" value="Selecionar orçamento" style="margin-bottom: 15px;"/>
                     <p:dialog   header="Lista de Orcamentos"  widgetVar="orcamento" modal="true"  showEffect="fade" hideEffect="explode">
@@ -288,7 +288,7 @@
                 <p:growl id="msg"/>
            
               </h:form>
-  
+                </center>
             </ui:define>
 
         </ui:composition>

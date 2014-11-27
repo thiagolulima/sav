@@ -9,12 +9,15 @@ import Model.Orcamento;
 import Model.PedidoVenda;
 import Model.Pessoa;
 import Model.Telefones;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -31,6 +34,7 @@ public class ImpressaoMB implements Serializable {
     Date dataFim = new Date();
     int codicoFiltro = 0;
     String pesquisa = "";
+    List<PedidoVenda> pedidos = new ArrayList<PedidoVenda>();
     @EJB
     PedidoEJB pedidoEJB;
     public ImpressaoMB() {
@@ -129,8 +133,25 @@ public class ImpressaoMB implements Serializable {
          
      }
      public List<PedidoVenda> pedidosPorPeriodo(){
-         return  pedidoEJB.findByAllPedidosPeriodo(dataInicio, dataFim);
+         pedidos = pedidoEJB.findByAllPedidosPeriodo(dataInicio, dataFim);
+         return  pedidos;
      }
+     public String retornaValorTotalPedidos(){
+         
+         Double total = 0.0;
+         for(PedidoVenda ped: pedidos){
+             
+             total = total + ped.getOrcamento().retornaTotalCompraDouble();
+         }
+         String formatString = String.format("%.2f", total)  ;
+         return "R$  " + String.valueOf(formatString);
+     }
+     public void imprimeRelatorioVendas() throws IOException{
+         if(codicoFiltro == 0){
+             FacesContext.getCurrentInstance().getExternalContext().redirect("imprimePeriodo.xhtml");   
+         }
+     }
+     
      
     
 }

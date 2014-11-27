@@ -10,8 +10,9 @@
     <body>
 
         <ui:composition template="./../template/intra.xhtml">
-
+           
             <ui:define name="conteudo">
+                 <center>
                 <div id="clientes">
                    <h2 style="text-align: center;">Cadastro de Clientes</h2>
                    <h:form>
@@ -36,11 +37,11 @@
                 <p:commandLink value="Pessoa Fisica"  action="#{clienteMB.redirecionaClienteFisica()}"  
                                  style="margin-left: 15px; margin-top: 20px; margin-bottom: 20px;" />
                 <p:commandButton value="Incluir"  action="#{clienteMB.resetaCliente()}"    oncomplete="cadastro.show()"
-                                 style=" margin-right: 30px; margin-top: 20px; margin-bottom: 20px; float: right;" />
+                                 style="  margin-top: 20px;  margin-left: 20px; margin-bottom: 20px; " />
                 
                
            
-                <p:dataTable id="tabela" value="#{clienteMB.findByAllClienteJuridica()}" var="cliente" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
+                <p:dataTable id="tabela" value="#{clienteMB.findByAllClienteJuridica()}" style="max-width: 980px;" var="cliente" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
                  <f:facet name="header">  
                       <h2>Lista de clientes pessoa jurídica </h2>
                  </f:facet>  
@@ -146,6 +147,7 @@
                <ui:include src="cliente/fisica.xhtml"/>
           </p:dialog>                 
          </div>
+                 </center>
        </ui:define>
       </ui:composition>
     </body>

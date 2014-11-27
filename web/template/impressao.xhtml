@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+    <!-- START HEAD -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" media="all" href="../resources/css/styleImpre.css" /> <!-- MAIN THEME STYLESHEET -->
+        <title>Peg Informatika</title>
+   
+    </h:head>
+  
+    <h:body >
+        
+        
+        <div id="bodyy">
+            <center><div id="topo"  style=" margin-top: 5px;">
+                    <div id="topo2">
+                     <a href="./../" title="Peg Informatika" style="float: left; margin-left: 50px;"><img src="../resources/images/logopeg.png" title="Peg Informatika" alt="Peg Informatika" /></a>        
+                     <h2  style="margin-left: 50px;  font-weight: bold; font-size: 25px; float: left;">(34)3821-6404</h2>
+                    </div>
+                </div>
+            </center>
+       <div id="conteudo" >
+                 
+                    <ui:insert name="conteudo" />
+                   <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                     <f:facet name="default">
+                     </f:facet>
+                     <f:facet name="start">
+                     </f:facet>
+                     <f:facet name="complete">
+                     </f:facet>
+                    </p:ajaxStatus>
+                    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <img src="#{facesContext.externalContext.requestContextPath}/resources/images/carregando.gif"/>
+                    </p:dialog>
+                </div>
+                      
+              
+                				
+	<!-- START COPYRIGHT -->
+                <div id="copyright">
+                    <div class="inner group">
+                            <strong> Peg Informatika LTDA - Rua Major Gote, 1901 - Patos de Minas - MG, Brasil</strong>
+                    </div>
+                </div>
+                <!-- END COPYRIGHT -->
+        </div>
+    </h:body>
+  
+</html>

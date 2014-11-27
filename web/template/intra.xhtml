@@ -81,7 +81,16 @@
         <script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/shortcodes.js"></script>
 		<script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.colorbox-min.js"></script>
 		<script type="text/javascript" src="${facesContext.externalContext.request.contextPath}/resources/js/jquery.tweetable.js"></script>
-       
+        <script type="text/javascript">
+            function imprimir(){
+              var impre = '../intranet/imprimep.xhtml';
+             window.open(impre, 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1300, HEIGHT=560');
+            }
+            function imprimirOrc(){
+              var impre = '../intranet/imprimeo.xhtml';
+             window.open(impre, 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1300, HEIGHT=560');
+            }
+        </script>
     </h:head>
     <!-- START BODY -->
     <h:body class="no_js responsive stretched" onload="#{usuarioMB.verificaFuncionarioAtivo()}">
@@ -155,6 +164,11 @@
                                 </li>
                                 <li>
                                     <a href="#">RELATÓRIOS</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="relatorio.xhtml">Venda</a> </li> 
+                                        <li>  <a href="#">Lista de Produtos</a></li>
+                                        <li><a href="#">Lista de Clientes</a></li>
+                                    </ul>
                                 </li>
                                 
                                 <li  >
@@ -176,7 +190,7 @@
                 </div>
                 <!-- END HEADER -->
                   
-                <div id="conteudo" style=" margin:  auto;">
+                <div id="conteudo" style=" margin:auto;">
                  
                     <ui:insert name="conteudo" />
                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">

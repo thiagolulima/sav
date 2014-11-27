@@ -12,6 +12,7 @@
         <ui:composition template="./../template/intra.xhtml">
 
             <ui:define name="conteudo">
+                <center>
                 <div id="clientes">
                     <h2 style="text-align: center;">Cadastro de Funcionarios</h2>
                 <h:form>
@@ -31,9 +32,9 @@
                 <h:form id="form" styleClass="table"> 
                           
                 <p:commandButton value="Incluir"   oncomplete="cadastro.show()"
-                                 style=" margin-right: 30px; margin-top: 20px; margin-bottom: 20px; float: right;" />
+                                 style=" margin-right: 30px; margin-top: 20px; margin-bottom: 20px; " />
                
-                <p:dataTable id="tabela" value="#{ funcionarioMB.findByAllFuncionarios()}" var="funcionario" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
+                <p:dataTable id="tabela" value="#{ funcionarioMB.findByAllFuncionarios()}" style="max-width: 950px;" var="funcionario" rows="20"  paginator="true"  styleClass="table"  rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"  >
                  <f:facet name="header">  
                       <h2>Lista de Funcionarios </h2>
                  </f:facet>  
@@ -120,6 +121,7 @@
                    
               
       </div>
+                </center>
     </ui:define>
   </ui:composition>
  </body>

@@ -9,11 +9,12 @@
     <body>
 
         <ui:composition template="./../template/intra.xhtml">
-
+           
             <ui:define name="conteudo">
+                 <center>
               <h2 style="text-align: center;">Cadastro status de pedidos</h2>
               <h:form id="form2">
-                  <p:commandButton  action="#{ statusPedidoMB.resetaStatus()}" oncomplete="cadastroDialogo.show()"  update=":form2:incluiCategoria" style="float: right; margin-bottom: 5px;" value="Incluir"/>
+                  <p:commandButton  action="#{ statusPedidoMB.resetaStatus()}" oncomplete="cadastroDialogo.show()"  update=":form2:incluiCategoria"  value="Incluir"/>
                     <p:dialog   header="Cadastro"  widgetVar="cadastroDialogo" modal="true"  showEffect="fade" hideEffect="explode">
                       <p:outputPanel id="incluiCategoria"  layout="block" >   
                       <h:panelGrid columns="2" id="grid">
@@ -69,7 +70,7 @@
                 </p:dialog>
                 <p:growl id="msg"/>
               </h:form>
-              
+                 </center>
             </ui:define>
         </ui:composition>
 

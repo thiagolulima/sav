@@ -11,7 +11,7 @@
         <ui:composition template="./../template/intra.xhtml">
 
             <ui:define name="conteudo">
-             
+                <center>
                 <h:form id="form2">
                   
                      <p:commandButton   oncomplete="cadastroDialogo.show()"  update=":form2:incluiUsers" style=" margin-bottom: 5px;" value="Incluir"/>
@@ -65,7 +65,7 @@
               </h:form>
               <h:form id="form" style="margin-top: 20px;">
                   <div class="short-table white">  
-                  <p:dataTable var="user" value="#{ usersMB.findByUsers()}" style="margin-top: 5px;">
+                  <p:dataTable var="user" value="#{ usersMB.findByUsers()}" style="margin-top: 5px; max-width: 920px;">
                       <p:column  filterBy="#{user.id}"     headerText="Código Cliente" filterMatchMode="contains" style="color:#003399;" width="10"  >
                           <h:outputLabel value="#{user.id}"/> 
                       </p:column>
@@ -119,7 +119,7 @@
                 </p:dialog>
                <p:growl id="msgs"/>
               </h:form>
-               
+                </center>
             </ui:define>
         </ui:composition>
 

@@ -12,8 +12,6 @@
             <ui:define name="conteudo">
                 <h1 style="text-align:  center; color:  #0055CC;"> Pedidos Finalizados </h1>
                 <center>
-                    
-                    
                     <h:form id="form" style="margin-top: 25px; ">
                         <p:panelGrid columns="2">
                               <h:outputLabel value="Selecione o Filtro"/>
@@ -63,9 +61,7 @@
                                                         target="#{ pedidoMB.pedido}" />  
                           </p:commandLink> 
                         </p:column>
-                        
-                </p:dataTable>
-                  
+                </p:dataTable>  
                 <p:growl id="msg"/>
                 <p:dialog   header="Itens do Pedido"  widgetVar="Dialogo" modal="true"  showEffect="fade" hideEffect="explode">
                     <p:outputPanel id="vizualiza">

@@ -124,6 +124,14 @@ public class Orcamento implements Serializable {
         String formatString = String.format("%.2f", total)  ;
         return formatString ;
     }
+    public Double retornaTotalCompraDouble(){
+        Double total = 0.0 ;
+        for (ItemDeVenda item :produtos )
+        {
+           total = total + item.retornaValorTotalItemComDesconto();
+        }
+        return total;
+    }
     public double retornaValorParcela(){
         return Double.parseDouble(retornaTotalCompra())/condicaoPagamento.retornaQuantidadeParcelas();
     }

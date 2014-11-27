@@ -168,6 +168,11 @@ html { min-height:101% }
       height: 30px;
       background-color:  #00CC00;
 }
+#topo2{
+      max-width: 500px;
+       min-height:  100px;
+       margin-top: 10px;   
+}
 #header hr {
     border: none;
     border-top: 1px solid #CFCFCF;
@@ -889,4 +894,8 @@ form input[type="text"], form textarea { border: 1px solid #CFCFCF; -webkit-tran
     height: auto;
     max-width: 100%;
     width: auto;
+}
+.cabecalho {
+        color: black;
+        font-size: 14px;
 }
