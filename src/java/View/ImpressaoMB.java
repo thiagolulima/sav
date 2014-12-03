@@ -5,6 +5,7 @@
 package View;
 
 import Control.PedidoEJB;
+import Model.CondicaoPagamento;
 import Model.Orcamento;
 import Model.PedidoVenda;
 import Model.Pessoa;
@@ -30,6 +31,7 @@ public class ImpressaoMB implements Serializable {
     PedidoVenda pedido = new PedidoVenda();
     Orcamento orcamento = new Orcamento();
     Pessoa pessoa = new Pessoa();
+    CondicaoPagamento condicao = new CondicaoPagamento();
     Date dataInicio = new Date();
     Date dataFim = new Date();
     int codicoFiltro = 0;
@@ -95,6 +97,14 @@ public class ImpressaoMB implements Serializable {
     public void setDataFim(Date dataFim) {
         this.dataFim = dataFim;
     }
+
+    public CondicaoPagamento getCondicao() {
+        return condicao;
+    }
+
+    public void setCondicao(CondicaoPagamento condicao) {
+        this.condicao = condicao;
+    }
     
     public String valorTotalCompra(){
          if(pedido.getId() != null){
@@ -136,6 +146,18 @@ public class ImpressaoMB implements Serializable {
          pedidos = pedidoEJB.findByAllPedidosPeriodo(dataInicio, dataFim);
          return  pedidos;
      }
+     public List<PedidoVenda> pedidosPorPeriodoCondicao(){
+         pedidos = pedidoEJB.findByAllPedidosPeriodoCondicao(dataInicio, dataFim,condicao);
+         return  pedidos;
+     }
+     public List<PedidoVenda> pedidosPorPeriodoFuncionario(){
+         pedidos = pedidoEJB.findByAllPedidosDataFuncionario(dataInicio, dataFim, pessoa);
+         return  pedidos;
+     }
+     public List<PedidoVenda> pedidosPorPeriodoCliente(){
+         pedidos = pedidoEJB.findByAllPedidosDataCliente(dataInicio, dataFim, pessoa);
+         return  pedidos;
+     }
      public String retornaValorTotalPedidos(){
          
          Double total = 0.0;
@@ -149,6 +171,15 @@ public class ImpressaoMB implements Serializable {
      public void imprimeRelatorioVendas() throws IOException{
          if(codicoFiltro == 0){
              FacesContext.getCurrentInstance().getExternalContext().redirect("imprimePeriodo.xhtml");   
+         }
+         if(codicoFiltro == 1){
+             FacesContext.getCurrentInstance().getExternalContext().redirect("imprimeFuncionario.xhtml"); 
+         }
+         if(codicoFiltro == 2){
+             FacesContext.getCurrentInstance().getExternalContext().redirect("imprimeCliente.xhtml"); 
+         }
+         if(codicoFiltro == 4){
+             FacesContext.getCurrentInstance().getExternalContext().redirect("imprimeCondicao.xhtml"); 
          }
      }
      

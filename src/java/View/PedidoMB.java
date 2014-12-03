@@ -126,7 +126,6 @@ public class PedidoMB {
                }else{
                       orcamento.setProdutos(items);
                       pedido.setOrcamento(orcamento);
-                      funcionario.verificaFuncionarioAtivo();
                       pedido.getOrcamento().setFuncionario(funcionario.getFuncionario());
                       pedidoEJB.atualizaItens(pedido.getOrcamento().getProdutos());
                       pedido = pedidoEJB.incluiPedido(pedido);

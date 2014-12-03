@@ -19,7 +19,6 @@
                                   <f:selectItem itemValue="0" itemLabel="Por Periodo"/>
                                   <f:selectItem itemValue="1" itemLabel="Por Vendedor"/>
                                   <f:selectItem itemValue="2" itemLabel="Por Cliente"/>
-                                  <f:selectItem itemValue="3" itemLabel="Por Produdo"/>
                                   <f:selectItem itemValue="4" itemLabel="Por Cond. Pagamento"/>
                                   <p:ajax  update=":form"/>
                               </p:selectOneMenu>
@@ -34,30 +33,26 @@
                         </p:panelGrid>
                         <p:panelGrid columns="2" rendered="#{impressaoMB.codicoFiltro == 1}">
                                <h:outputLabel value="Vendedor:"  styleClass="prodCss"   />
-                              <p:selectOneMenu value="#{  impressaoMB.pessoa}"   styleClass="prodCss"  >  
+                               <p:selectOneMenu value="#{  impressaoMB.pessoa.id}"   styleClass="prodCss"  >  
                                   <f:selectItems value="#{  funcionarioMB.findByAllFuncionariosVendedores()}"
                                   var="funcionario"
-                                  itemValue="#{funcionario}"
+                                  itemValue="#{funcionario.id}"
                                   itemLabel="#{funcionario.nome}"   />
                             </p:selectOneMenu> 
                         </p:panelGrid>
                         <p:panelGrid columns="2" rendered="#{impressaoMB.codicoFiltro == 2}">
                               <h:outputLabel value="Código do Cliente:"/>
-                              <p:inputText value="#{impressaoMB.pesquisa}" size="15" required="true" label="Código Cliente"/>
-                        </p:panelGrid>
-                        <p:panelGrid columns="2" rendered="#{impressaoMB.codicoFiltro == 3}">
-                              <h:outputLabel value="Código do Produto:"/>
-                              <p:inputText value="#{impressaoMB.pesquisa}" size="15" required="true" label="Código Produto"/>
+                              <p:inputText value="#{impressaoMB.pessoa.id}" size="15" required="true" label="Código Cliente"/>
                         </p:panelGrid>
                         <p:panelGrid columns="2" rendered="#{impressaoMB.codicoFiltro == 4}">
                             <h:outputLabel value="Condição de Pagamento:"  styleClass="prodCss"   />
-                            <p:selectOneMenu value="#{ pedidoMB.orcamento.condicaoPagamento}" converter="#{ converterCondicaoMB}"  styleClass="prodCss"  >  
+                            <h:selectOneMenu value="#{impressaoMB.condicao}" converter="#{ converterCondicaoMB}"  styleClass="prodCss"  >  
                                 <f:selectItems value="#{ condicaoMB.findByAllCondicao()}"
                                   var="condicao"
                                   itemValue="#{condicao}"
                                   itemLabel="#{condicao.descricao}"   />
                               
-                            </p:selectOneMenu> 
+                            </h:selectOneMenu> 
                         </p:panelGrid>
                
                 <p:growl id="msg"/>

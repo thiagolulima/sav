@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body  >
+
+        <ui:composition template="./../template/impressao.xhtml">
+            <ui:define name="conteudo">
+                
+                <div id="cabecalho" style="margin-top: 10px;" >
+                    <center><h1 style=" font-size: 20px;  margin: auto; ">Relatorio Vendas Por Condição de Pagamento </h1>
+                        <h1> <p:outputLabel value="#{impressaoMB.condicao.descricao}"/></h1>
+                        <h1 style=" font-size: 20px;  margin: auto; ">
+                            <h:outputText value="#{impressaoMB.dataInicio}" styleClass="cabecalho">
+                                  <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" /> 
+                            </h:outputText>
+                            <h:outputText value="á" styleClass="cabecalho"/>
+                            <h:outputText value="#{impressaoMB.dataFim}" styleClass="cabecalho">
+                                  <f:convertDateTime pattern="dd/MM/yyyy "  timeZone="GMT-02:00" /> 
+                            </h:outputText>
+                        </h1>         
+                    </center>
+                    <p:dataTable var="pedido" value="#{ impressaoMB.pedidosPorPeriodoCondicao()}" style="margin-top: 15px; max-width: 800px; margin: auto;  ">
+                      <p:columnGroup type="header">                      
+                        <p:row>  
+                          <p:column headerText="Cod. Produto"/>  
+                          <p:column headerText="Desc. Produto " />  
+                          <p:column headerText="Qtde " />  
+                          <p:column headerText="Valor" />  
+                          <p:column headerText="Desconto R$" />  
+                          <p:column headerText="Total" />  
+                       </p:row>  
+                      </p:columnGroup>  
+                     <p:subTable var="ex" value="#{pedido.orcamento.produtos}">       
+                     <f:facet name="header" >  
+                         <h:outputText value="Pedido nº:" style="font-size: 14px; font-weight: bold; margin-left: 10px;"/>
+                         <h:outputText value="#{pedido.id} " style="font-size: 14px; font-weight: bold; margin-left: 10px;"/>
+                         <h:outputText value="Cliente n°:" style="font-size: 14px; font-weight: bold; margin-left: 20px;"/>
+                         <h:outputText value="#{pedido.orcamento.pessoa.id} " style="font-size: 14px; font-weight: bold; margin-left: 10px;"/>
+                         <h:outputText value="Cliente:" style="font-size: 14px; font-weight: bold; margin-left: 20px;"/>
+                         <h:outputText value="#{pedido.orcamento.pessoa.nome} " style="font-size: 14px; font-weight: bold; margin-left: 10px;"/>
+                         <h:outputText value="Vendedor:" style="font-size: 14px; font-weight: bold; margin-left: 20px;"/>
+                         <h:outputText value="#{pedido.orcamento.funcionario.nome} " style="font-size: 14px; font-weight: bold; margin-left: 10px;"/>
+                      </f:facet>  
+                       <p:column headerText="Cod Produto">      
+                          #{ex.produto.codProduto}  
+                       </p:column>  
+                       <p:column>               
+                           #{ex.produto.descricao}  
+                       </p:column>  
+                       <p:column>               
+                           #{ex.quantidade}  
+                       </p:column>  
+                       <p:column>               
+                           #{ex.valorPago}  
+                       </p:column>  
+                       <p:column>               
+                           #{ex.desconto.valorDescontoAutorizado}
+                       </p:column>
+                       <p:column>               
+                             #{ex.retornaValorTotalItemComDesconto()}  
+                       </p:column>
+                          <p:columnGroup type="footer">
+                           <p:row>
+                              <p:column footerText="" />
+                             <p:column footerText="" />
+                             <p:column footerText="" />
+                             <p:column footerText="" />
+                             <p:column footerText="Total: " style="text-align:right"/>
+                             <p:column footerText="#{pedido.orcamento.retornaTotalCompra()}" />
+                          </p:row>
+                       </p:columnGroup>
+                        </p:subTable>
+                        <f:facet name="footer">
+                               <h:outputText value="Total Geral:" />
+                               <h:outputText value="#{impressaoMB.retornaValorTotalPedidos()}" style="margin-left: 20px;" />
+                         </f:facet>
+                   </p:dataTable>
+                        
+                </div>
+                    
+                 
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>

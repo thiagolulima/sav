@@ -1,6 +1,7 @@
 
 package Control;
 
+import Model.CondicaoPagamento;
 import Model.Funcionario;
 import Model.ItemDeVenda;
 import Model.Orcamento;
@@ -97,7 +98,34 @@ public class PedidoEJB {
                 }
             
                 return lista;
-           
+        }
+        public List<PedidoVenda> findByAllPedidosDataCliente( Date dataInicial,Date dataFim, Pessoa pessoa){
+            
+             List<PedidoVenda> lista = 
+                     em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.pessoa.id =:id AND u.status.id = 3 AND u.dataPedido BETWEEN :dataInicial AND :dataFim ")
+                     .setParameter("id",pessoa.getId())
+                     .setParameter("dataInicial", dataInicial)
+                     .setParameter("dataFim", dataFim)
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+        }
+        public List<PedidoVenda> findByAllPedidosDataFuncionario( Date dataInicial,Date dataFim, Pessoa pessoa){
+            
+             List<PedidoVenda> lista = 
+                     em.createQuery("Select u From PedidoVenda u WHERE u.orcamento.funcionario.id =:id AND u.status.id = 3 AND u.dataPedido BETWEEN :dataInicial AND :dataFim ")
+                     .setParameter("id",pessoa.getId())
+                     .setParameter("dataInicial", dataInicial)
+                     .setParameter("dataFim", dataFim)
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
         }
         public List<PedidoVenda> findByAllPedidos(){
             
@@ -151,7 +179,22 @@ public class PedidoEJB {
                 }
             
                 return lista;
-           
         }
+     public List<PedidoVenda> findByAllPedidosPeriodoCondicao( Date dataInicial,Date dataFim, CondicaoPagamento condicao){
+            
+             List<PedidoVenda> lista = 
+                     em.createQuery("Select u From PedidoVenda u WHERE  u.status.id = 3 AND (u.dataPedido BETWEEN :dataInicial AND :dataFim) "
+                     + "AND u.orcamento.condicaoPagamento.id = :id ")
+                     .setParameter("dataInicial", dataInicial)
+                     .setParameter("dataFim", dataFim)
+                     .setParameter("id", condicao.getId())
+                     .getResultList();
+             if (lista.size() <1){
+                    return lista = new ArrayList<PedidoVenda>();
+                }
+            
+                return lista;
+        }
+  
 
 } 
